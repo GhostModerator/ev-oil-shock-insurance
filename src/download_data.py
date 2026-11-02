@@ -96,6 +96,8 @@ def get_trips_hourly(years=None):
         ds = dataset_for(y)
         f = os.path.join(RAW, f"tnp_trips_month_hour_{y}.csv")
         have = pd.read_csv(f) if os.path.exists(f) else pd.DataFrame()
+        if len(have) and "additional_charges" in have:     # re-fetch months saved without the fee column
+            have = have[have.groupby("month")["additional_charges"].transform(lambda c: c.notna().any())]
         done = set(have["month"].str[:7]) if len(have) else set()
         for m in months_of(y):
             if str(m) in done:
