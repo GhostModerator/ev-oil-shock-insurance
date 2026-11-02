@@ -1,0 +1,19 @@
+[hourly:2026]
+  6dvr-xwnh 2026-01: 7,537,072 trips (52s)
+  6dvr-xwnh 2026-02: 7,198,485 trips (18s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+  6dvr-xwnh 2026-03: 8,123,324 trips (1052s)
+  6dvr-xwnh 2026-04: 7,633,117 trips (45s)
+    ConnectionError -- retry 1
+  6dvr-xwnh 2026-05: 7,775,375 trips (470s)
+  6dvr-xwnh 2026-06: 7,259,398 trips (9s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+  6dvr-xwnh 2026-07: 7,599,473 trips (1021s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+  6dvr-xwnh 2026-08: 7,577,342 trips (660s)
+  6dvr-xwnh 2026-09: 7,360,074 trips (114s)
