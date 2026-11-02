@@ -1,17 +1,17 @@
 Share of vehicle-months by label:
 cls
-ICE          62.3%
-AMBIGUOUS    25.4%
-HYBRID       10.5%
+ICE          65.2%
+AMBIGUOUS    22.5%
+HYBRID       10.4%
 BEV           1.5%
-UNMATCHED     0.2%
 PHEV          0.2%
+UNMATCHED     0.2%
 Name: vehicle_months, dtype: str
 
 By method:
 method
 epa        86.1%
-llm         1.4%
+llm         1.3%
 name       10.1%
 none        0.2%
 pre2005     2.2%
@@ -19,32 +19,32 @@ Name: vehicle_months, dtype: str
 
 Ambiguous option sets:
 options
-HYBRID|ICE         20.1%
-HYBRID|ICE|PHEV     2.8%
+HYBRID|ICE         17.3%
+HYBRID|ICE|PHEV     2.7%
 BEV|ICE             1.6%
-ICE|PHEV            0.7%
-HYBRID|PHEV         0.1%
+ICE|PHEV            0.8%
 BEV|HYBRID|PHEV     0.1%
+HYBRID|PHEV         0.1%
 Name: vehicle_months, dtype: str
 
-Unmatched strings: 1423, 0.1% of vehicle-months
+Unmatched strings: 1384, 0.1% of vehicle-months
 
 Selected months:
              total     bev    phev  hybrid_low  hybrid_high  unmatched
 month                                                                 
-2022-02-01   61073  0.0045  0.0022      0.1250       0.3880     0.0003
-2022-12-01   76304  0.0253  0.0022      0.1352       0.3933     0.0004
-2026-02-01   97206  0.0453  0.0034      0.2288       0.4605     0.0005
-2026-09-01  102360  0.0492  0.0037      0.2499       0.4773     0.0011
+2022-02-01   61073  0.0045  0.0022      0.1240       0.3640     0.0003
+2022-12-01   76304  0.0253  0.0024      0.1338       0.3702     0.0004
+2026-02-01   97206  0.0454  0.0044      0.2261       0.4412     0.0003
+2026-09-01  102360  0.0493  0.0048      0.2474       0.4593     0.0010
 Taxis with a known fuel source: 6,999
-  labeled one powertrain: 2,853 (41%); accuracy 97.0%
-  ambiguous:              4,070 (58%); true label is one of the options 99.9%
+  labeled one powertrain: 2,855 (41%); accuracy 97.0%
+  ambiguous:              4,068 (58%); true label is one of the options 99.9%
   unmatched:              76
 
 Accuracy by method (single-label rows):
               n  accuracy
 method                   
-epa      1297.0     0.940
+epa      1299.0     0.940
 llm        57.0     0.930
 name     1496.0     0.998
 pre2005     3.0     0.333
@@ -54,7 +54,7 @@ label   BEV  HYBRID  ICE
 truth                   
 BEV       3       0    0
 HYBRID    0    1863   50
-ICE       0      37  900
+ICE       0      37  902
 
 Most common errors:
 Vehicle Make  Vehicle Model  truth   label 
@@ -69,4 +69,22 @@ TOYOTA        PRIUS V        ICE     HYBRID     3
 FORD          ESCAPE         HYBRID  ICE        2
 DODGE         CARAVAN        HYBRID  ICE        2
 
-Hand-label sample: 296 rows -> data/labels/hand_label_sample.csv
+Hand-label sample kept (296 rows); 17 rows got a new label:
+         make           model   year       cls     options   new_cls new_options
+        Volvo            Xc60 2023.0 AMBIGUOUS HYBRID|PHEV AMBIGUOUS    ICE|PHEV
+    Chevrolet          Impala 2014.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+         Jeep        Wagoneer 2023.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+          Bmw        7 Series 2012.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+     Chrysler Pacifica Hybrid 2017.0    HYBRID      HYBRID      PHEV        PHEV
+     Chrysler Pacifica Hybrid 2024.0    HYBRID      HYBRID      PHEV        PHEV
+      Lincoln  Aviator Hybrid 2022.0    HYBRID      HYBRID      PHEV        PHEV
+       Toyota   Corollaascent 2016.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+       Toyota  Corolla Ascent 2010.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+       Toyota   Corollaascent 2014.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+       Toyota  Corolla Ascent 2014.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+       Toyota  Corolla Ascent 2009.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+       Toyota  Corolla Ascent 2008.0 AMBIGUOUS  HYBRID|ICE       ICE         ICE
+       Toyota      Sienna Xle 2022.0 UNMATCHED         NaN    HYBRID      HYBRID
+        Honda    Accord Sedan 2024.0 UNMATCHED         NaN AMBIGUOUS  HYBRID|ICE
+Mercedes-Benz       Eqb-Class 2023.0 UNMATCHED         NaN       BEV         BEV
+        Honda   Insighthybrid 2010.0 UNMATCHED         NaN    HYBRID      HYBRID

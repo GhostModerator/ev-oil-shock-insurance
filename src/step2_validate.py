@@ -51,6 +51,19 @@ def taxi_test(opts, epa_models, llm_map):
 
 def hand_sample(n_per_method=None, seed=7):
     lab = pd.read_csv(os.path.join(OUT, "powertrain_labels.csv"))
+    f = os.path.join(OUT, "hand_label_sample.csv")
+    if os.path.exists(f):        # keep the same rows (and any hand labels); refresh the program's labels
+        old = pd.read_csv(f, dtype={"hand_label": str, "agree": str, "note": str})
+        k = ["make", "model", "year"]
+        new = old[k + ["vehicle_months", "hand_label", "agree", "note"]].merge(
+            lab[k + ["cls", "options", "method"]], on=k, how="left")
+        new = new[k + ["cls", "options", "method", "vehicle_months", "hand_label", "agree", "note"]]
+        changed = (new[["cls", "options"]].fillna("") != old[["cls", "options"]].fillna("")).any(axis=1)
+        new.to_csv(f, index=False)
+        print(f"\nHand-label sample kept ({len(new)} rows); {changed.sum()} rows got a new label:")
+        print(pd.concat([old.loc[changed, k + ["cls", "options"]],
+                         new.loc[changed, ["cls", "options"]].add_prefix("new_")], axis=1).to_string(index=False))
+        return
     lab = lab[lab["vehicle_months"] >= 50]      # skip one-off typos; sample uniformly among the rest
     n_per_method = n_per_method or {"epa": 100, "name": 60, "llm": 80, "pre2005": 40, "none": 20}
     parts = []

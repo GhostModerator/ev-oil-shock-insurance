@@ -42,8 +42,18 @@ def make_key(s):
     return MAKE_ALIAS.get(k, k)
 
 
+PLUGIN_NAMED_HYBRID = ("PACIFICA HYBRID", "AVIATOR HYBRID", "CORSAIR HYBRID")   # sold as "Hybrid", really PHEV
+
+
 def name_rule(model):
     m = " " + re.sub(r"[^A-Z0-9]+", " ", str(model).upper()) + " "
+    if any(p in m for p in PLUGIN_NAMED_HYBRID):
+        return "PHEV"
+    k = key(model)
+    if "PLUGIN" in k:
+        return "PHEV"
+    if "HYBRID" in k:            # merged words like "INSIGHTHYBRID", "PRIUSHYBRID"
+        return "HYBRID"
     if re.search(r" (PLUG IN|PHEV|PRIME|ENERGI|4XE) ", m) or " VOLT " in m:
         return "PHEV"
     if re.search(r" (HYBRID|HYB|HEV) ", m) or re.search(r" PRIUS ", m):
@@ -56,6 +66,11 @@ def name_rule(model):
 def build_epa_index():
     e = pd.read_csv(os.path.join(FETCHED, "epa_vehicles_slim.csv"), low_memory=False)
     e["cls"] = e["atvType"].map(ATV).fillna("ICE")
+    # EPA tags 48V "mild hybrids" (Volvo B5, Jeep eTorque, Chevy eAssist) as Hybrid. They can't drive
+    # on electric power and get gas-car mileage, so for fuel cost they count as ICE.
+    volts = pd.to_numeric(e["evMotor"].astype(str).str.extract(r"(\d+)\s*V\b", expand=False), errors="coerce")
+    mild = e["cls"].eq("HYBRID") & (volts < 160)
+    e.loc[mild, "cls"] = "ICE"
     e["mk"] = e["make"].map(make_key)
     rows = []
     for col in ("baseModel", "model"):
@@ -68,6 +83,17 @@ def build_epa_index():
     opts = g["cls"].agg(lambda s: "|".join(sorted(set(s)))).rename("options")
     eff = idx.groupby(["mk", "md", "year", "cls"])[["comb08", "combE"]].mean()
     return opts, eff, set(idx["md"])
+
+
+TRIM_WORDS = ("SEDAN", "HATCHBACK", "COUPE", "WAGON", "5DOOR", "4DOOR", "ASCENT", "XLE", "LE", "SE",
+              "LIMITED", "CLASS", "SUV")
+
+
+def strip_trim(md):
+    for w in TRIM_WORDS:
+        if md.endswith(w) and len(md) > len(w) + 1:
+            return md[: -len(w)]
+    return None
 
 
 def epa_lookup(opts, mk, md, year):
@@ -93,6 +119,8 @@ def label_one(make, model, year, opts, epa_models, llm_map):
     elif y is not None and y <= 2030:
         md2 = md[len(mk):] if md.startswith(mk) and len(md) > len(mk) else md   # "MAZDA3" -> "3"
         o = epa_lookup(opts, mk, md, y) or epa_lookup(opts, mk, md2, y)
+        if o is None and strip_trim(md):                              # "SIENNAXLE" -> "SIENNA"
+            o = epa_lookup(opts, mk, strip_trim(md), y)
         if o is None and len(md) >= 4:   # EPA names that contain the TNP string, e.g. "CARAVANGRANDCARAVAN"
             found = [epa_lookup(opts, mk, c, y) for c in epa_models if md in c]
             found = [f for f in found if f is not None]
