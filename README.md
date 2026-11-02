@@ -1,13 +1,10 @@
-# EVs as Oil-Shock Insurance for a Rideshare Fleet
+# EVs as Oil-Shock Insurance for Rideshare Drivers
 
 ISE 599 Project 2 (USC, Fall 2026)
 
-Project outline (shared doc): https://claude.ai/artifact/FcTbCvwgAdEPkGHzxtr4EL
-Save an exported copy in [`docs/`](docs/outline.md) once the plan is final.
-
 ## Question
 
-How should a Chicago rideshare fleet split its cars between gas, hybrid and battery-electric when gas prices can jump with no warning? We treat electrification as insurance: it costs extra in a normal year and pays off in a shock year. We measure the premium and the payout.
+Which car should a Chicago rideshare driver drive, gas, hybrid or battery-electric, when gas prices can jump with no warning? We treat electrification as insurance: it costs extra in a normal year and pays off in a shock year. We measure the premium and the payout for different driver types, then add them up to a city-wide fleet mix and compare it with the real one.
 
 Two shocks frame it. In 2022 gas spiked and fell back within months. In 2026 the Iran war started at the end of February and the US average went from $2.98 to $4.15 by early September, and stayed high. A good risk model has to handle both a short spike and a long one.
 
@@ -16,11 +13,12 @@ Two shocks frame it. In 2022 gas spiked and fell back within months. In 2026 the
 1. **Data**: Chicago TNP open data (vehicles, trips, drivers), EIA gas, Brent and Illinois electricity prices, EPA fuel economy.
 2. **AI-assisted cleaning**: an LLM matches messy make/model strings to EPA entries and labels the powertrain. We check it against a rule-based baseline and a hand-labeled sample.
 3. **Price model**: two candidates fit on 2000-2025 weekly Chicago gas. A mean-reverting jump model (fits 2022) and a calm/crisis regime-switching model (fits 2026). Electricity and demand are simulated jointly with gas.
-4. **Optimization**: two-stage stochastic program. Stage 1 buys gas / hybrid / EV cars. Stage 2 runs the fleet month by month in each scenario (fuel, charging, charging downtime, extra rentals if short).
-5. **Risk**: mean-superquantile (CVaR) objective. Sweep the risk weight to get a mean-risk frontier. The gap between the risk-neutral and risk-averse mix is the value of the insurance.
-6. **Evaluation**: fit through 2025, then run the chosen mix through the real 2026 prices. Plus sensitivity to EV price premium, resale value, electricity price and jump size.
+4. **Driver types**: group drivers by trips per month (light, regular, heavy) using the TNP vehicle data.
+5. **Optimization**: two-stage stochastic program per driver type. Stage 1 picks a car (gas / hybrid / EV, buy or lease, home charger or not). Stage 2 chooses hours driven each month in each scenario (fuel, charging, charging downtime, income).
+6. **Risk**: mean-superquantile (CVaR) objective. Sweep the risk weight to get a mean-risk frontier. The gap between the risk-neutral and risk-averse choice is the value of the insurance.
+7. **Evaluation**: fit through 2025, then run the chosen cars through the real 2026 prices. Plus sensitivity to EV price premium, resale value, electricity price and jump size.
 
-Key questions: Is a hybrid the cheaper hedge? How much of the hedge is left if power prices and fares move with gas? Did the Chicago market actually shift after 2022?
+Key questions: Is a hybrid the cheaper hedge, and for which drivers? How much of the hedge is left if power prices and fares move with gas? How far is the real Chicago fleet from the model's mix, and why?
 
 ## Repo layout
 
@@ -32,8 +30,7 @@ data/
   README.md                       full data source list with links
   raw/  processed/                (git-ignored)
 figures/
-docs/
-  outline.md                      project outline sent to the professor
+docs/                             proposal, slides, notes
 ```
 
 ## Run
