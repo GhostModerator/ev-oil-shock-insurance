@@ -1,0 +1,32 @@
+[hourly:2024]
+  n26f-ihde 2024-01: 7,062,191 trips (23s)
+    ConnectionError -- retry 1
+  n26f-ihde 2024-02: 7,094,137 trips (320s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ConnectionError -- retry 5
+  n26f-ihde 2024-03: 7,971,332 trips (1834s)
+    ConnectionError -- retry 1
+  n26f-ihde 2024-04: 7,371,563 trips (427s)
+    ConnectionError -- retry 1
+  n26f-ihde 2024-05: 7,753,102 trips (376s)
+  n26f-ihde 2024-06: 7,616,926 trips (27s)
+  n26f-ihde 2024-07: 7,511,714 trips (20s)
+  n26f-ihde 2024-08: 7,884,642 trips (32s)
+    ConnectionError -- retry 1
+  n26f-ihde 2024-09: 7,398,318 trips (312s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ConnectionError -- retry 5
+  n26f-ihde 2024-10: 7,861,588 trips (1806s)
+  n26f-ihde 2024-11: 7,620,093 trips (20s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ConnectionError -- retry 5
+  n26f-ihde 2024-12: 7,812,937 trips (1795s)
