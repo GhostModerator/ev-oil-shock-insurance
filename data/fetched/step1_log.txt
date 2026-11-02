@@ -1,0 +1,91 @@
+Dataset: Transportation Network Providers - Vehicles
+Columns:
+  month_reported            text
+  state                     text
+  make                      text
+  model                     text
+  color                     text
+  year                      number
+  last_inspection_month     text
+  number_of_trips           number
+  multiple_tnps             checkbox
+  pulled 50,000 grouped rows
+  pulled 100,000 grouped rows
+  pulled 150,000 grouped rows
+  pulled 200,000 grouped rows
+  pulled 250,000 grouped rows
+  pulled 300,000 grouped rows
+  pulled 350,000 grouped rows
+  pulled 400,000 grouped rows
+  pulled 450,000 grouped rows
+  pulled 500,000 grouped rows
+  pulled 550,000 grouped rows
+  pulled 562,134 grouped rows
+Saved /home/runner/work/ev-oil-shock-insurance/ev-oil-shock-insurance/data/raw/tnp_trips_per_vehicle_dist.csv (116,126 rows)
+
+Months covered: 2015-03 to 2026-09
+Distinct make/model strings: 2,643
+Vehicle-month records by class:
+cls
+AMBIGUOUS    4,377,516
+BEV            195,578
+HYBRID       1,354,438
+ICE          7,233,283
+Name: n_vehicles, dtype: str
+
+Months with unusual vehicle counts (check before trusting):
+month
+2015-03-01     28,454
+2015-04-01     32,041
+2015-05-01     36,554
+2015-06-01     46,352
+2015-11-01     44,850
+2017-03-01    154,235
+2021-03-01     48,568
+Name: total_n_vehicles, dtype: str
+
+Shares around the 2022 shock and the latest months:
+            total_n_vehicles  bev_share_n_vehicles  hybrid_low_n_vehicles  hybrid_high_n_vehicles  bev_share_n_trips
+month                                                                                                               
+2021-07-01             55592                0.0030                 0.1129                  0.4987             0.0019
+2021-08-01             56567                0.0033                 0.1147                  0.4989             0.0020
+2021-09-01             59827                0.0036                 0.1186                  0.5025             0.0018
+2021-10-01             61537                0.0037                 0.1202                  0.5028             0.0017
+2021-11-01             61164                0.0035                 0.1214                  0.4992             0.0017
+2021-12-01             61707                0.0043                 0.1215                  0.4982             0.0024
+2022-01-01             61915                0.0046                 0.1236                  0.4985             0.0036
+2022-02-01             61073                0.0045                 0.1258                  0.5004             0.0040
+2022-03-01             62852                0.0052                 0.1285                  0.5022             0.0048
+2022-04-01             64262                0.0109                 0.1295                  0.5009             0.0151
+2022-05-01             66823                0.0118                 0.1312                  0.5008             0.0210
+2022-06-01             68912                0.0133                 0.1328                  0.5017             0.0226
+2022-07-01             70802                0.0193                 0.1332                  0.4983             0.0316
+2022-08-01             72746                0.0208                 0.1336                  0.4964             0.0429
+2022-09-01             73900                0.0221                 0.1356                  0.4968             0.0416
+2022-10-01             75060                0.0236                 0.1366                  0.4970             0.0433
+2022-11-01             75591                0.0245                 0.1351                  0.4928             0.0453
+2022-12-01             76304                0.0245                 0.1356                  0.4935             0.0435
+2023-01-01             78166                0.0239                 0.1358                  0.4935             0.0430
+2023-02-01             78705                0.0244                 0.1360                  0.4923             0.0395
+2023-03-01             81067                0.0269                 0.1373                  0.4914             0.0454
+2023-04-01             81935                0.0283                 0.1378                  0.4918             0.0476
+2023-05-01             84498                0.0308                 0.1383                  0.4909             0.0516
+2023-06-01             86290                0.0313                 0.1401                  0.4917             0.0514
+
+Last 12 months:
+            total_n_vehicles  bev_share_n_vehicles  hybrid_low_n_vehicles  hybrid_high_n_vehicles  bev_share_n_trips
+month                                                                                                               
+2025-10-01            104135                0.0446                 0.2046                  0.5161             0.0550
+2025-11-01            102800                0.0456                 0.2072                  0.5181             0.0547
+2025-12-01            102507                0.0445                 0.2111                  0.5217             0.0508
+2026-01-01            102549                0.0441                 0.2125                  0.5219             0.0503
+2026-02-01             97206                0.0438                 0.2188                  0.5349             0.0498
+2026-03-01             99196                0.0438                 0.2210                  0.5371             0.0496
+2026-04-01             99047                0.0452                 0.2236                  0.5397             0.0511
+2026-05-01             98342                0.0465                 0.2264                  0.5418             0.0507
+2026-06-01             97695                0.0472                 0.2289                  0.5433             0.0521
+2026-07-01             98071                0.0471                 0.2325                  0.5459             0.0499
+2026-08-01             98209                0.0470                 0.2342                  0.5470             0.0480
+2026-09-01            102360                0.0469                 0.2340                  0.5462             0.0534
+
+Saved outputs to data/processed/ and figures/

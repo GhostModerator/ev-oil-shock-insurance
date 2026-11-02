@@ -1,0 +1,5 @@
+[licenses]
+  saved public_passenger_vehicle_licenses.csv; columns: ['Vehicle Type', 'Public Vehicle Number', 'Status', 'Vehicle Make', 'Vehicle Model', 'Vehicle Model Year', 'Vehicle Color', 'Vehicle Fuel Source', 'Wheelchair Accessible', 'Company Name', 'Address', 'City', 'State', 'ZIP Code', 'Taxi Affiliation', 'Taxi Medallion License Management ', 'Record ID']
+[mpg]
+  saved vehicles.csv (fueleconomy.gov)
+  saved epa_vehicles_slim.csv (13 columns, model years 2005+)
