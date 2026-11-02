@@ -50,13 +50,20 @@ DRIVERS = "j6wf-834c"
 
 def socrata(dataset, params):
     headers = {"X-App-Token": TOKEN} if TOKEN else {}
-    for attempt in range(5):
-        r = requests.get(SOCRATA.format(dataset), params=params, headers=headers, timeout=300)
+    for attempt in range(6):
+        try:
+            r = requests.get(SOCRATA.format(dataset), params=params, headers=headers, timeout=600)
+        except requests.RequestException as e:          # dropped connection: the server is still busy, retry
+            print(f"    {type(e).__name__} -- retry {attempt + 1}", flush=True)
+            time.sleep(30 * (attempt + 1))
+            continue
         if r.status_code == 200:
             return r.json()
-        print(f"    HTTP {r.status_code}: {r.text[:150]} -- retry {attempt + 1}")
-        time.sleep(10 * (attempt + 1))
-    r.raise_for_status()
+        if r.status_code == 400:                        # bad query (e.g. missing column): don't retry
+            r.raise_for_status()
+        print(f"    HTTP {r.status_code}: {r.text[:150]} -- retry {attempt + 1}", flush=True)
+        time.sleep(30 * (attempt + 1))
+    raise RuntimeError("Socrata request kept failing")
 
 
 BASE_SELECT = ("count(*) AS trips, sum(trip_miles) AS miles, "
