@@ -127,9 +127,15 @@ def get_trips_hourly(years=None):
 
 def get_tips(years=None):
     """Tips by month x hour of day (the hourly files have fare but not tips). One query per month."""
-    years = years or [2025, 2026]
+    years = years or [2024, 2025, 2026]
     for y in years:
         ds = dataset_for(y)
+        cols = list(socrata(ds, {"$limit": 1})[0].keys())
+        print(f"  {ds} columns: {cols}", flush=True)
+        tipcol = next((c for c in cols if c.lower().startswith("tip")), None)
+        if tipcol is None:
+            print(f"  {ds} has no tip column; skipping {y}", flush=True)
+            continue
         f = os.path.join(RAW, f"tnp_tips_month_hour_{y}.csv")
         have = pd.read_csv(f) if os.path.exists(f) else pd.DataFrame()
         done = set(have["month"].str[:7]) if len(have) else set()
@@ -142,12 +148,12 @@ def get_tips(years=None):
             try:
                 batch = socrata(ds, {
                     "$select": "date_extract_hh(trip_start_timestamp) AS hour, count(*) AS trips, "
-                               "sum(fare) AS fare, sum(tip) AS tip, count(tip) AS n_tip_rows",
+                               f"sum(fare) AS fare_sum, sum({tipcol}) AS tip_sum",
                     "$where": where, "$group": "hour", "$order": "hour", "$limit": 100})
             except Exception as e:
                 print(f"    {m} failed: {e}", flush=True)
                 continue
-            b = pd.DataFrame(batch)
+            b = pd.DataFrame(batch).rename(columns={"fare_sum": "fare", "tip_sum": "tip"})
             b.insert(0, "month", f"{m}-01")
             b["dataset"] = ds
             have = pd.concat([have, b], ignore_index=True)
