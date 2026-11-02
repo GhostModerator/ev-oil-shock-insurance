@@ -1,0 +1,19 @@
+[hourly:2021]
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+  m6dm-c72p 2021-01: 3,355,589 trips (678s)
+  m6dm-c72p 2021-02: 3,267,073 trips (20s)
+  m6dm-c72p 2021-03: 3,861,950 trips (55s)
+  m6dm-c72p 2021-04: 3,803,638 trips (29s)
+  m6dm-c72p 2021-05: 4,088,632 trips (12s)
+    ConnectionError -- retry 1
+  m6dm-c72p 2021-06: 4,123,875 trips (382s)
+  m6dm-c72p 2021-07: 4,526,386 trips (219s)
+  m6dm-c72p 2021-08: 4,344,194 trips (25s)
+  m6dm-c72p 2021-09: 4,571,240 trips (77s)
+    ConnectionError -- retry 1
+  m6dm-c72p 2021-10: 5,277,444 trips (524s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+  m6dm-c72p 2021-11: 4,903,719 trips (732s)
+  m6dm-c72p 2021-12: 5,046,136 trips (86s)
