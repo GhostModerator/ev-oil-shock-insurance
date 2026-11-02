@@ -46,15 +46,27 @@ Known limits we will report rather than hide:
 
 **Scenarios.** We simulate many monthly paths of prices and demand over a four-year holding period. Then we reduce them to a few hundred representative scenarios so the model solves fast.
 
-**Two-stage stochastic program, one per driver type.** In stage 1 the driver picks a car from a small set X: gas, hybrid or EV, bought or leased, with or without a home charger. In stage 2, for each scenario ξ, the driver decides how many hours to drive each month. Revenue depends on hours and fares. Cost depends on fuel or charging, and an EV loses some hours to charging. L(x, ξ) is the driver's loss: minus the four-year net income, resale value included. We trade off average loss against tail loss using the superquantile (CVaR) at level α:
+**Two-stage stochastic program, one driver at a time.** Drivers don't affect each other, so we solve the problem from one driver's point of view and repeat it for each driver type.
+
+Stage 1 is the car: keep the current gas car, buy a hybrid, or buy an EV.
+
+Stage 2 is how the driver uses the car each month, once prices and demand are known. A simple "how many hours" decision would be trivial: with linear revenue and cost the driver either drives the maximum or not at all. So stage 2 has three tradeoffs built in:
+
+1. **Hours have falling value.** From the hourly trip data we rank time blocks from best (evening peak, weekend nights) to worst. The driver fills the best blocks first, so each extra hour earns less. When gas gets expensive a gas-car driver drops the weakest blocks first, which is a real way to soften the shock.
+2. **Fixed vs. variable cost.** An EV has a higher monthly payment but a low cost per mile. An old gas car has almost no fixed cost but its cost per mile moves with gas. The EV removes fuel risk but makes the driver more exposed to demand risk, for example a drop in fares or trips. The gas car keeps the option to drive less.
+3. **Charging time competes with good hours.** Without home charging, an EV driver loses some hours to fast charging, and that grows with miles driven. Heavy drivers save the most on fuel but also lose the most time.
+
+There is also a cash constraint. Each month, income minus costs has to cover the car payment and a basic living cost, and any shortfall is borrowed at a high rate. For a fixed car and scenario, stage 2 is a linear program; the falling value of hours enters as a piecewise-linear concave revenue curve.
+
+L(x, ξ) is the driver's loss: minus the four-year net income, resale value included. We trade off average loss against tail loss using the superquantile (CVaR) at level α:
 
 $$\min_{x \in X}\; (1-\lambda)\,\mathbb{E}\big[L(x,\xi)\big] + \lambda\,\bar q_\alpha\big(L(x,\xi)\big)$$
 
-For a fixed car, stage 2 is a linear program in each scenario, and the Rockafellar-Uryasev formula computes the superquantile from the scenario losses:
+The Rockafellar-Uryasev formula computes the superquantile from the scenario losses:
 
 $$\bar q_\alpha(L) = \min_{\eta}\Big\{\eta + \tfrac{1}{1-\alpha}\,\mathbb{E}\big[(L-\eta)^+\big]\Big\}$$
 
-Setting λ = 0 gives the risk-neutral choice, and λ = 1 the most risk-averse one. The value of the insurance is the gap between them: how much average income the safer car gives up, and how much it raises income in the worst months. We repeat this for each driver type and weight by the number of drivers in each type to get the city-wide mix.
+Setting λ = 0 gives the risk-neutral choice, and λ = 1 the most risk-averse one. The value of the insurance is the gap between them: how much average income the safer car gives up, and how much it raises income in the worst months. We repeat this for each driver type and weight by the number of drivers in each type to get the city-wide mix. Buying vs. leasing and home charging access are handled as sensitivity cases.
 
 ## 4. Questions we will answer
 

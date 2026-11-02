@@ -16,7 +16,7 @@ Two shocks frame it. In 2022 gas spiked and fell back within months. In 2026 the
 2. **AI-assisted cleaning**: an LLM matches messy make/model strings to EPA entries and labels the powertrain. We check it against a rule-based baseline and a hand-labeled sample.
 3. **Price model**: two candidates fit on 2000-2025 weekly Chicago gas. A mean-reverting jump model (fits 2022) and a calm/crisis regime-switching model (fits 2026). Electricity and demand are simulated jointly with gas.
 4. **Driver types**: group drivers by trips per month (light, regular, heavy) using the TNP vehicle data.
-5. **Optimization**: two-stage stochastic program per driver type. Stage 1 picks a car (gas / hybrid / EV, buy or lease, home charger or not). Stage 2 chooses hours driven each month in each scenario (fuel, charging, charging downtime, income).
+5. **Optimization**: two-stage stochastic program, one driver at a time. Stage 1: keep the current gas car, buy a hybrid, or buy an EV. Stage 2: which time blocks to drive each month (falling value per hour), with fuel or charging cost, charging time lost from good hours, and a cash constraint for the car payment. The tradeoff: an EV removes fuel risk but adds fixed cost and demand risk; a gas car keeps the option to drive less.
 6. **Risk**: mean-superquantile (CVaR) objective. Sweep the risk weight to get a mean-risk frontier. The gap between the risk-neutral and risk-averse choice is the value of the insurance.
 7. **Evaluation**: fit through 2025, then run the chosen cars through the real 2026 prices. Plus sensitivity to EV price premium, resale value, electricity price and jump size.
 
