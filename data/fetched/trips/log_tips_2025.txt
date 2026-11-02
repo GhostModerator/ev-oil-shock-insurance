@@ -1,13 +1,26 @@
 [tips:2025]
-    2025-01 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-01-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-02-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-02 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-02-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-03-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-03 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-03-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-04-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-04 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-04-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-05-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-05 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-05-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-06-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-06 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-06-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-07-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-07 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-07-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-08-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-08 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-08-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-09-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-09 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-09-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-10-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-10 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-10-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-11-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-11 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-11-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272025-12-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
-    2025-12 failed: 400 Client Error: Bad Request for url: https://data.cityofchicago.org/resource/6dvr-xwnh.json?%24select=date_extract_hh%28trip_start_timestamp%29+AS+hour%2C+count%28%2A%29+AS+trips%2C+sum%28fare%29+AS+fare%2C+sum%28tip%29+AS+tip%2C+count%28tip%29+AS+n_tip_rows&%24where=trip_start_timestamp+%3E%3D+%272025-12-01T00%3A00%3A00%27+AND+trip_start_timestamp+%3C+%272026-01-01T00%3A00%3A00%27&%24group=hour&%24order=hour&%24limit=100
+  6dvr-xwnh columns: ['trip_id', 'trip_start_timestamp', 'trip_end_timestamp', 'trip_seconds', 'trip_miles', 'percent_time_chicago', 'percent_distance_chicago', 'pickup_community_area', 'dropoff_community_area', 'fare', 'tip', 'additional_charges', 'trip_total', 'shared_trip_authorized', 'shared_trip_match', 'trips_pooled', 'pickup_centroid_latitude', 'pickup_centroid_longitude', 'pickup_centroid_location', 'dropoff_centroid_latitude', 'dropoff_centroid_longitude', 'dropoff_centroid_location']
+  6dvr-xwnh 2025-01: tips saved (3s)
+  6dvr-xwnh 2025-02: tips saved (121s)
+  6dvr-xwnh 2025-03: tips saved (24s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+    ReadTimeout -- retry 3
+    ReadTimeout -- retry 4
+  6dvr-xwnh 2025-04: tips saved (2743s)
+  6dvr-xwnh 2025-05: tips saved (34s)
+  6dvr-xwnh 2025-06: tips saved (18s)
+    ReadTimeout -- retry 1
+  6dvr-xwnh 2025-07: tips saved (662s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+    ReadTimeout -- retry 3
+    ReadTimeout -- retry 4
+    ReadTimeout -- retry 5
+  6dvr-xwnh 2025-08: tips saved (3529s)
+    ReadTimeout -- retry 1
+  6dvr-xwnh 2025-09: tips saved (657s)
+  6dvr-xwnh 2025-10: tips saved (20s)
+  6dvr-xwnh 2025-11: tips saved (15s)
+    ReadTimeout -- retry 1
+  6dvr-xwnh 2025-12: tips saved (657s)
