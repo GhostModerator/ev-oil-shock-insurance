@@ -190,6 +190,12 @@ def get_mpg():
     with zipfile.ZipFile(io.BytesIO(r.content)) as z:
         z.extractall(RAW)
     print("  saved vehicles.csv (fueleconomy.gov)")
+    # Slim copy with only the columns we use (small enough to commit)
+    full = pd.read_csv(os.path.join(RAW, "vehicles.csv"), low_memory=False)
+    keep = [c for c in ["year", "make", "model", "baseModel", "atvType", "fuelType", "fuelType1",
+                        "comb08", "combE", "evMotor", "VClass", "trany", "id"] if c in full.columns]
+    full[full["year"] >= 2005][keep].to_csv(os.path.join(RAW, "epa_vehicles_slim.csv"), index=False)
+    print(f"  saved epa_vehicles_slim.csv ({len(keep)} columns, model years 2005+)")
 
 
 def get_licenses():

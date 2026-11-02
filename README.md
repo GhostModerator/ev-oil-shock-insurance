@@ -38,6 +38,10 @@ docs/
 
 ## Run
 
+Easiest: on GitHub, open the **Actions** tab → **Fetch data** → **Run workflow**. It runs the scripts on GitHub's servers and commits the aggregated results to `data/fetched/`. Add `EIA_API_KEY` (and optionally `SOCRATA_APP_TOKEN`) under Settings → Secrets and variables → Actions if you need electricity prices.
+
+Locally:
+
 ```bash
 pip install -r requirements.txt
 python src/step1_tnp_powertrain_share.py
