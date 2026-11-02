@@ -36,8 +36,8 @@ CACHE = os.path.join(RAW, "tnp_vehicle_agg.csv")
 # Shock windows to shade on the plot (YYYY-MM). Fill in the 2026 window once we pin it down.
 SHOCKS = {
     "2022 gas spike": ("2022-03", "2022-07"),
-    # US gas jumped from early March 2026; second leg in July. The vehicle data may stop before this.
-    "2026 Iran shock": ("2026-03", "2026-07"),
+    # War began Feb 28 2026; US avg $2.98 -> $4.15 by Sept 7 and still high. Vehicle data may stop before this.
+    "2026 Iran shock": ("2026-03", "2026-10"),
 }
 
 

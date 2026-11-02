@@ -6,3 +6,4 @@ xlrd
 scipy
 pyomo
 highspy
+statsmodels

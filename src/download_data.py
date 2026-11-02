@@ -7,9 +7,11 @@ Run from the repo root:
     python src/download_data.py gas power  # only some parts
 
 Parts:
-    trips    Chicago TNP trips, aggregated to monthly totals (count, miles, fare)
+    trips    Chicago TNP trips, aggregated to monthly totals (count, miles, seconds, fare, extra charges)
+    hourly   Chicago TNP trips by month x hour of day (for peak demand vs. charging downtime)
     drivers  Chicago TNP drivers, active drivers per month
-    gas      EIA weekly retail regular gasoline: Chicago + US average
+    gas      EIA weekly retail regular gasoline: Chicago, Midwest (PADD 2), US average
+    brent    Brent crude spot price, daily (FRED DCOILBRENTEU, source EIA)
     power    EIA monthly retail electricity price, Illinois (residential + commercial)
     mpg      fueleconomy.gov vehicle table (MPG / kWh per 100 mi by make-model-year)
 
@@ -55,26 +57,62 @@ def socrata(dataset, params):
     r.raise_for_status()
 
 
+BASE_SELECT = ("count(*) AS trips, sum(trip_miles) AS miles, "
+               "sum(trip_seconds) AS seconds, sum(fare) AS fare")
+
+
+def year_where(y):
+    return (f"trip_start_timestamp >= '{y}-01-01T00:00:00' "
+            f"AND trip_start_timestamp < '{y + 1}-01-01T00:00:00'")
+
+
+def trips_query(ds, y, group_cols, group_by):
+    """Try with additional_charges (fees/surcharges); fall back if a dataset lacks it."""
+    for extra in (", sum(additional_charges) AS additional_charges", ""):
+        try:
+            return socrata(ds, {
+                "$select": f"{group_cols}, {BASE_SELECT}{extra}",
+                "$where": year_where(y),
+                "$group": group_by,
+                "$order": group_by,
+                "$limit": 50000,
+            })
+        except Exception as e:
+            print(f"    query failed{' with additional_charges' if extra else ''}: {e}")
+    return []
+
+
 def get_trips():
     """Monthly totals only. The raw trip tables are hundreds of millions of rows."""
     rows = []
     for ds, years in TRIP_DATASETS.items():
         for y in years:
             print(f"  trips {ds} {y}")
-            batch = socrata(ds, {
-                "$select": "date_trunc_ym(trip_start_timestamp) AS month, count(*) AS trips, "
-                           "sum(trip_miles) AS miles, sum(trip_seconds) AS seconds, sum(fare) AS fare",
-                "$where": f"trip_start_timestamp >= '{y}-01-01T00:00:00' "
-                          f"AND trip_start_timestamp < '{y + 1}-01-01T00:00:00'",
-                "$group": "month",
-                "$order": "month",
-            })
+            batch = trips_query(ds, y, "date_trunc_ym(trip_start_timestamp) AS month", "month")
             for b in batch:
                 b["dataset"] = ds
             rows.extend(batch)
     df = pd.DataFrame(rows)
     df.to_csv(os.path.join(RAW, "tnp_trips_monthly.csv"), index=False)
     print(f"  saved tnp_trips_monthly.csv ({len(df)} months)")
+
+
+def get_trips_hourly():
+    """Month x hour-of-day totals, to see how much demand falls in peak hours."""
+    rows = []
+    for ds, years in TRIP_DATASETS.items():
+        for y in years:
+            print(f"  hourly trips {ds} {y}")
+            batch = trips_query(
+                ds, y,
+                "date_trunc_ym(trip_start_timestamp) AS month, date_extract_hh(trip_start_timestamp) AS hour",
+                "month, hour")
+            for b in batch:
+                b["dataset"] = ds
+            rows.extend(batch)
+    df = pd.DataFrame(rows)
+    df.to_csv(os.path.join(RAW, "tnp_trips_month_hour.csv"), index=False)
+    print(f"  saved tnp_trips_month_hour.csv ({len(df)} rows)")
 
 
 def get_drivers():
@@ -89,25 +127,37 @@ def get_drivers():
     print(f"  saved tnp_drivers_monthly.csv ({len(df)} months)")
 
 
-def get_gas():
-    # EIA weekly retail regular gasoline, Chicago (series EMM_EPMR_PTE_YORD_DPG)
-    url = "https://www.eia.gov/dnav/pet/hist_xls/EMM_EPMR_PTE_YORD_DPGw.xls"
+def eia_weekly_xls(series, col, fname):
+    """EIA history spreadsheet for one weekly series."""
+    url = f"https://www.eia.gov/dnav/pet/hist_xls/{series}w.xls"
     try:
         r = requests.get(url, timeout=120)
         r.raise_for_status()
         df = pd.read_excel(io.BytesIO(r.content), sheet_name="Data 1", skiprows=2)
-        df.columns = ["date", "chicago_regular_usd_gal"]
-        df.to_csv(os.path.join(RAW, "eia_gas_chicago_weekly.csv"), index=False)
-        print(f"  saved eia_gas_chicago_weekly.csv ({len(df)} weeks)")
+        df.columns = ["date", col]
+        df.to_csv(os.path.join(RAW, fname), index=False)
+        print(f"  saved {fname} ({len(df)} weeks, {df['date'].min()} to {df['date'].max()})")
     except Exception as e:
-        print(f"  Chicago gas download failed ({e}). Download by hand from\n"
-              "  https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s=EMM_EPMR_PTE_YORD_DPG&f=W")
+        print(f"  {series} download failed ({e}). Download by hand from\n"
+              f"  https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s={series}&f=W")
 
-    # US average as a backup / for comparison (FRED GASREGW)
-    us = pd.read_csv("https://fred.stlouisfed.org/graph/fredgraph.csv?id=GASREGW")
-    us.columns = ["date", "us_regular_usd_gal"]
-    us.to_csv(os.path.join(RAW, "eia_gas_us_weekly.csv"), index=False)
-    print(f"  saved eia_gas_us_weekly.csv ({len(us)} weeks)")
+
+def fred(series, col, fname):
+    df = pd.read_csv(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}")
+    df.columns = ["date", col]
+    df.to_csv(os.path.join(RAW, fname), index=False)
+    print(f"  saved {fname} ({len(df)} rows, {df['date'].min()} to {df['date'].max()})")
+
+
+def get_gas():
+    # Chicago is the main series; Midwest (PADD 2) and US are backups / comparisons
+    eia_weekly_xls("EMM_EPMR_PTE_YORD_DPG", "chicago_regular_usd_gal", "eia_gas_chicago_weekly.csv")
+    eia_weekly_xls("EMM_EPMR_PTE_R20_DPG", "midwest_regular_usd_gal", "eia_gas_midwest_weekly.csv")
+    fred("GASREGW", "us_regular_usd_gal", "eia_gas_us_weekly.csv")
+
+
+def get_brent():
+    fred("DCOILBRENTEU", "brent_usd_bbl", "brent_daily.csv")
 
 
 def get_power():
@@ -120,7 +170,8 @@ def get_power():
         "data[0]": "price",
         "facets[stateid][]": "IL",
         "facets[sectorid][]": ["RES", "COM"],
-        "start": "2018-01",
+        "start": "2001-01",   # long history so we can see how power moved in 2005, 2008, 2022
+
         "sort[0][column]": "period",
         "sort[0][direction]": "asc",
         "length": 5000,
@@ -140,8 +191,8 @@ def get_mpg():
     print("  saved vehicles.csv (fueleconomy.gov)")
 
 
-PARTS = {"trips": get_trips, "drivers": get_drivers, "gas": get_gas,
-         "power": get_power, "mpg": get_mpg}
+PARTS = {"trips": get_trips, "hourly": get_trips_hourly, "drivers": get_drivers,
+         "gas": get_gas, "brent": get_brent, "power": get_power, "mpg": get_mpg}
 
 if __name__ == "__main__":
     wanted = sys.argv[1:] or list(PARTS)
