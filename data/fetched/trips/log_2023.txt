@@ -1,0 +1,30 @@
+[hourly:2023]
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+  n26f-ihde 2023-01: 6,161,697 trips (985s)
+  n26f-ihde 2023-02: 6,137,213 trips (23s)
+    ConnectionError -- retry 1
+  n26f-ihde 2023-03: 7,084,558 trips (314s)
+    HTTP 503: {"message":"Service unavailable","errorCode":"service-unavailable","data":{}} -- retry 1
+    HTTP 503: {"message":"Service unavailable","errorCode":"service-unavailable","data":{}} -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ConnectionError -- retry 5
+  n26f-ihde 2023-04: 6,688,983 trips (1257s)
+  n26f-ihde 2023-05: 6,985,706 trips (18s)
+  n26f-ihde 2023-06: 6,972,963 trips (119s)
+    ConnectionError -- retry 1
+  n26f-ihde 2023-07: 7,116,010 trips (327s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+  n26f-ihde 2023-08: 7,136,839 trips (996s)
+  n26f-ihde 2023-09: 7,130,636 trips (34s)
+    ConnectionError -- retry 1
+  n26f-ihde 2023-10: 7,549,415 trips (460s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+  n26f-ihde 2023-11: 7,002,728 trips (832s)
+    ConnectionError -- retry 1
+  n26f-ihde 2023-12: 7,444,225 trips (317s)
