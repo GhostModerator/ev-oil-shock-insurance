@@ -125,6 +125,36 @@ def get_trips_hourly(years=None):
             print(f"  {ds} {m}: {int(b['trips'].astype(float).sum()):,} trips ({time.time() - t0:.0f}s)", flush=True)
 
 
+def get_tips(years=None):
+    """Tips by month x hour of day (the hourly files have fare but not tips). One query per month."""
+    years = years or [2025, 2026]
+    for y in years:
+        ds = dataset_for(y)
+        f = os.path.join(RAW, f"tnp_tips_month_hour_{y}.csv")
+        have = pd.read_csv(f) if os.path.exists(f) else pd.DataFrame()
+        done = set(have["month"].str[:7]) if len(have) else set()
+        for m in months_of(y):
+            if str(m) in done:
+                continue
+            t0 = time.time()
+            where = (f"trip_start_timestamp >= '{m}-01T00:00:00' "
+                     f"AND trip_start_timestamp < '{m + 1}-01T00:00:00'")
+            try:
+                batch = socrata(ds, {
+                    "$select": "date_extract_hh(trip_start_timestamp) AS hour, count(*) AS trips, "
+                               "sum(fare) AS fare, sum(tip) AS tip, count(tip) AS n_tip_rows",
+                    "$where": where, "$group": "hour", "$order": "hour", "$limit": 100})
+            except Exception as e:
+                print(f"    {m} failed: {e}", flush=True)
+                continue
+            b = pd.DataFrame(batch)
+            b.insert(0, "month", f"{m}-01")
+            b["dataset"] = ds
+            have = pd.concat([have, b], ignore_index=True)
+            have.to_csv(f, index=False)
+            print(f"  {ds} {m}: tips saved ({time.time() - t0:.0f}s)", flush=True)
+
+
 def get_trips(years=None):
     """Monthly totals, summed from the month x hour files."""
     get_trips_hourly(years)
@@ -245,7 +275,7 @@ def get_licenses():
     print(f"  saved public_passenger_vehicle_licenses.csv; columns: {list(df.columns)}")
 
 
-PARTS = {"licenses": get_licenses, "trips": get_trips, "hourly": get_trips_hourly, "drivers": get_drivers,
+PARTS = {"licenses": get_licenses, "trips": get_trips, "hourly": get_trips_hourly, "tips": get_tips, "drivers": get_drivers,
          "gas": get_gas, "brent": get_brent, "power": get_power, "mpg": get_mpg}
 
 if __name__ == "__main__":
