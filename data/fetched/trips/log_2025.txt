@@ -1,0 +1,27 @@
+[hourly:2025]
+  6dvr-xwnh 2025-01: 7,607,290 trips (28s)
+  6dvr-xwnh 2025-02: 7,288,575 trips (224s)
+  6dvr-xwnh 2025-03: 8,037,030 trips (174s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+    ConnectionError -- retry 3
+    HTTP 500: {"message":"Internal error: please include code 65721040-0d21-4ccc-b898-8b6edf6f9299 if you report the error","errorCode":"internal-error","data":{"ta -- retry 4
+    ConnectionError -- retry 5
+    ReadTimeout -- retry 6
+    2025-04 failed with additional_charges: Socrata request kept failing
+    ReadTimeout -- retry 1
+    ConnectionError -- retry 2
+  6dvr-xwnh 2025-04: 7,535,395 trips (4046s)
+    ReadTimeout -- retry 1
+    ConnectionError -- retry 2
+  6dvr-xwnh 2025-05: 8,087,664 trips (1182s)
+    ConnectionError -- retry 1
+  6dvr-xwnh 2025-06: 7,690,883 trips (360s)
+  6dvr-xwnh 2025-07: 8,039,804 trips (42s)
+    ReadTimeout -- retry 1
+    ConnectionError -- retry 2
+  6dvr-xwnh 2025-08: 8,219,082 trips (1062s)
+  6dvr-xwnh 2025-09: 7,496,069 trips (8s)
+  6dvr-xwnh 2025-10: 8,157,275 trips (117s)
+  6dvr-xwnh 2025-11: 7,627,660 trips (44s)
+  6dvr-xwnh 2025-12: 7,727,689 trips (62s)
