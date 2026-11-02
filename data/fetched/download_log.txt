@@ -1,5 +1,18 @@
-[licenses]
-  saved public_passenger_vehicle_licenses.csv; columns: ['Vehicle Type', 'Public Vehicle Number', 'Status', 'Vehicle Make', 'Vehicle Model', 'Vehicle Model Year', 'Vehicle Color', 'Vehicle Fuel Source', 'Wheelchair Accessible', 'Company Name', 'Address', 'City', 'State', 'ZIP Code', 'Taxi Affiliation', 'Taxi Medallion License Management ', 'Record ID']
-[mpg]
-  saved vehicles.csv (fueleconomy.gov)
-  saved epa_vehicles_slim.csv (13 columns, model years 2005+)
+[gas]
+/home/runner/work/ev-oil-shock-insurance/ev-oil-shock-insurance/src/download_data.py:151: Pandas4Warning: The xlrd engine is deprecated and will be removed in a future version. Use the calamine engine instead, by setting engine='calamine'.
+  df = pd.read_excel(io.BytesIO(r.content), sheet_name="Data 1", skiprows=2)
+  saved eia_gas_chicago_weekly.csv (1378 rows, 2000-06-05 00:00:00 to 2026-10-26 00:00:00)
+/home/runner/work/ev-oil-shock-insurance/ev-oil-shock-insurance/src/download_data.py:151: Pandas4Warning: The xlrd engine is deprecated and will be removed in a future version. Use the calamine engine instead, by setting engine='calamine'.
+  df = pd.read_excel(io.BytesIO(r.content), sheet_name="Data 1", skiprows=2)
+  saved eia_gas_midwest_weekly.csv (1799 rows, 1992-05-11 00:00:00 to 2026-10-26 00:00:00)
+/home/runner/work/ev-oil-shock-insurance/ev-oil-shock-insurance/src/download_data.py:151: Pandas4Warning: The xlrd engine is deprecated and will be removed in a future version. Use the calamine engine instead, by setting engine='calamine'.
+  df = pd.read_excel(io.BytesIO(r.content), sheet_name="Data 1", skiprows=2)
+  saved eia_gas_us_weekly.csv (1889 rows, 1990-08-20 00:00:00 to 2026-10-26 00:00:00)
+[brent]
+/home/runner/work/ev-oil-shock-insurance/ev-oil-shock-insurance/src/download_data.py:151: Pandas4Warning: The xlrd engine is deprecated and will be removed in a future version. Use the calamine engine instead, by setting engine='calamine'.
+  df = pd.read_excel(io.BytesIO(r.content), sheet_name="Data 1", skiprows=2)
+  saved brent_daily.csv (9117 rows, 1987-05-20 00:00:00 to 2026-10-27 00:00:00)
+[power]
+  saved eia_power_illinois_monthly.csv (616 rows, price in cents/kWh)
+[drivers]
+  saved tnp_drivers_monthly.csv (140 months)
