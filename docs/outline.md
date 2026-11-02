@@ -40,7 +40,7 @@ Known limits we will report rather than hide:
 
 ## 3. Analytics pipeline
 
-Data (EPA, TNP vehicles, TNP trips, EIA prices) → driver types and demand calibration + price model → scenario generation → two-stage stochastic program → mean-risk frontier, value of the insurance, 2026 backtest.
+![Analytics pipeline](pipeline.png)
 
 **Price model.** We fit two models to weekly Chicago gas prices from 2000 to 2025. One is a mean-reverting process with jumps, which fits short spikes like 2022. The other switches between a calm regime and a crisis regime, which fits long shocks like 2026. Electricity prices and demand are modeled together with gas, so the scenarios keep their correlation.
 
