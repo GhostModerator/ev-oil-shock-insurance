@@ -8,8 +8,9 @@ Run from the repo root:
 
 Parts:
     licenses Chicago public passenger vehicle licenses (taxis); may list fuel type
-    trips   Chicago TNP trips, aggregated to monthly totals (count, miles, seconds, fare, extra charges)
-    hourly   Chicago TNP trips by month x hour of day (for peak demand vs. charging downtime)
+    trips    Chicago TNP trips by month x hour of day (count, miles, seconds, fare, extra charges),
+             one file per year, plus monthly totals. "trips:2022" runs one year.
+    hourly   same month x hour files, without rebuilding the monthly totals
     drivers  Chicago TNP drivers, active drivers per month
     gas      EIA weekly retail regular gasoline: Chicago, Midwest (PADD 2), US average
     brent    Brent crude spot price, daily (FRED DCOILBRENTEU, source EIA)
@@ -50,7 +51,7 @@ DRIVERS = "j6wf-834c"
 def socrata(dataset, params):
     headers = {"X-App-Token": TOKEN} if TOKEN else {}
     for attempt in range(5):
-        r = requests.get(SOCRATA.format(dataset), params=params, headers=headers, timeout=600)
+        r = requests.get(SOCRATA.format(dataset), params=params, headers=headers, timeout=300)
         if r.status_code == 200:
             return r.json()
         print(f"    HTTP {r.status_code}: {r.text[:150]} -- retry {attempt + 1}")
@@ -67,53 +68,66 @@ def year_where(y):
             f"AND trip_start_timestamp < '{y + 1}-01-01T00:00:00'")
 
 
-def trips_query(ds, y, group_cols, group_by):
-    """Try with additional_charges (fees/surcharges); fall back if a dataset lacks it."""
-    for extra in (", sum(additional_charges) AS additional_charges", ""):
-        try:
-            return socrata(ds, {
-                "$select": f"{group_cols}, {BASE_SELECT}{extra}",
-                "$where": year_where(y),
-                "$group": group_by,
-                "$order": group_by,
-                "$limit": 50000,
-            })
-        except Exception as e:
-            print(f"    query failed{' with additional_charges' if extra else ''}: {e}")
-    return []
+def months_of(y):
+    last = pd.Timestamp.today().to_period("M") - 1          # skip the current, incomplete month
+    return [m for m in pd.period_range(f"{y}-01", f"{y}-12", freq="M") if m <= last]
 
 
-def get_trips():
-    """Monthly totals only. The raw trip tables are hundreds of millions of rows."""
-    rows = []
-    for ds, years in TRIP_DATASETS.items():
-        for y in years:
-            print(f"  trips {ds} {y}")
-            batch = trips_query(ds, y, "date_trunc_ym(trip_start_timestamp) AS month", "month")
-            for b in batch:
-                b["dataset"] = ds
-            rows.extend(batch)
-    df = pd.DataFrame(rows)
+def dataset_for(y):
+    return next(ds for ds, years in TRIP_DATASETS.items() if y in years)
+
+
+def get_trips_hourly(years=None):
+    """Month x hour-of-day totals, one query per month (a year at once is too slow).
+
+    Each year goes to its own file and is saved after every month, so a run that stops
+    part-way keeps what it has and a re-run only fetches the missing months.
+    Monthly totals = sum over hours, so no separate monthly query is needed.
+    """
+    years = years or [y for yrs in TRIP_DATASETS.values() for y in yrs]
+    for y in years:
+        ds = dataset_for(y)
+        f = os.path.join(RAW, f"tnp_trips_month_hour_{y}.csv")
+        have = pd.read_csv(f) if os.path.exists(f) else pd.DataFrame()
+        done = set(have["month"].str[:7]) if len(have) else set()
+        for m in months_of(y):
+            if str(m) in done:
+                continue
+            nxt = m + 1
+            t0 = time.time()
+            where = (f"trip_start_timestamp >= '{m}-01T00:00:00' "
+                     f"AND trip_start_timestamp < '{nxt}-01T00:00:00'")
+            batch = []
+            for extra in (", sum(additional_charges) AS additional_charges", ""):
+                try:
+                    batch = socrata(ds, {
+                        "$select": f"date_extract_hh(trip_start_timestamp) AS hour, {BASE_SELECT}{extra}",
+                        "$where": where, "$group": "hour", "$order": "hour", "$limit": 100})
+                    break
+                except Exception as e:
+                    print(f"    {m} failed{' with additional_charges' if extra else ''}: {e}", flush=True)
+            if not batch:
+                continue
+            b = pd.DataFrame(batch)
+            b.insert(0, "month", f"{m}-01")
+            b["dataset"] = ds
+            have = pd.concat([have, b], ignore_index=True)
+            have.to_csv(f, index=False)
+            print(f"  {ds} {m}: {int(b['trips'].astype(float).sum()):,} trips ({time.time() - t0:.0f}s)", flush=True)
+
+
+def get_trips(years=None):
+    """Monthly totals, summed from the month x hour files."""
+    get_trips_hourly(years)
+    files = [os.path.join(RAW, x) for x in sorted(os.listdir(RAW)) if x.startswith("tnp_trips_month_hour_")]
+    if not files:
+        return
+    h = pd.concat([pd.read_csv(x) for x in files])
+    num = [c for c in ("trips", "miles", "seconds", "fare", "additional_charges") if c in h]
+    h[num] = h[num].apply(pd.to_numeric, errors="coerce")
+    df = h.groupby(["month", "dataset"], as_index=False)[num].sum()
     df.to_csv(os.path.join(RAW, "tnp_trips_monthly.csv"), index=False)
     print(f"  saved tnp_trips_monthly.csv ({len(df)} months)")
-
-
-def get_trips_hourly():
-    """Month x hour-of-day totals, to see how much demand falls in peak hours."""
-    rows = []
-    for ds, years in TRIP_DATASETS.items():
-        for y in years:
-            print(f"  hourly trips {ds} {y}")
-            batch = trips_query(
-                ds, y,
-                "date_trunc_ym(trip_start_timestamp) AS month, date_extract_hh(trip_start_timestamp) AS hour",
-                "month, hour")
-            for b in batch:
-                b["dataset"] = ds
-            rows.extend(batch)
-    df = pd.DataFrame(rows)
-    df.to_csv(os.path.join(RAW, "tnp_trips_month_hour.csv"), index=False)
-    print(f"  saved tnp_trips_month_hour.csv ({len(df)} rows)")
 
 
 def get_drivers():
@@ -128,37 +142,49 @@ def get_drivers():
     print(f"  saved tnp_drivers_monthly.csv ({len(df)} months)")
 
 
-def eia_weekly_xls(series, col, fname):
-    """EIA history spreadsheet for one weekly series."""
-    url = f"https://www.eia.gov/dnav/pet/hist_xls/{series}w.xls"
+def eia_xls(series, col, fname, freq="w"):
+    """EIA history spreadsheet for one series (freq w = weekly, d = daily). Returns True if saved."""
+    url = f"https://www.eia.gov/dnav/pet/hist_xls/{series}{freq}.xls"
     try:
         r = requests.get(url, timeout=120)
         r.raise_for_status()
         df = pd.read_excel(io.BytesIO(r.content), sheet_name="Data 1", skiprows=2)
         df.columns = ["date", col]
         df.to_csv(os.path.join(RAW, fname), index=False)
-        print(f"  saved {fname} ({len(df)} weeks, {df['date'].min()} to {df['date'].max()})")
+        print(f"  saved {fname} ({len(df)} rows, {df['date'].min()} to {df['date'].max()})", flush=True)
+        return True
     except Exception as e:
-        print(f"  {series} download failed ({e}). Download by hand from\n"
-              f"  https://www.eia.gov/dnav/pet/hist/LeafHandler.ashx?n=PET&s={series}&f=W")
+        print(f"  EIA {series} failed ({e})", flush=True)
+        return False
 
 
 def fred(series, col, fname):
-    df = pd.read_csv(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}")
-    df.columns = ["date", col]
-    df.to_csv(os.path.join(RAW, fname), index=False)
-    print(f"  saved {fname} ({len(df)} rows, {df['date'].min()} to {df['date'].max()})")
+    """FRED csv. Returns True if saved."""
+    try:
+        r = requests.get(f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series}",
+                         headers={"User-Agent": "Mozilla/5.0"}, timeout=60)
+        r.raise_for_status()
+        df = pd.read_csv(io.StringIO(r.text))
+        df.columns = ["date", col]
+        df.to_csv(os.path.join(RAW, fname), index=False)
+        print(f"  saved {fname} ({len(df)} rows, {df['date'].min()} to {df['date'].max()})", flush=True)
+        return True
+    except Exception as e:
+        print(f"  FRED {series} failed ({e})", flush=True)
+        return False
 
 
 def get_gas():
     # Chicago is the main series; Midwest (PADD 2) and US are backups / comparisons
-    eia_weekly_xls("EMM_EPMR_PTE_YORD_DPG", "chicago_regular_usd_gal", "eia_gas_chicago_weekly.csv")
-    eia_weekly_xls("EMM_EPMR_PTE_R20_DPG", "midwest_regular_usd_gal", "eia_gas_midwest_weekly.csv")
-    fred("GASREGW", "us_regular_usd_gal", "eia_gas_us_weekly.csv")
+    eia_xls("EMM_EPMR_PTE_YORD_DPG", "chicago_regular_usd_gal", "eia_gas_chicago_weekly.csv")
+    eia_xls("EMM_EPMR_PTE_R20_DPG", "midwest_regular_usd_gal", "eia_gas_midwest_weekly.csv")
+    eia_xls("EMM_EPMR_PTE_NUS_DPG", "us_regular_usd_gal", "eia_gas_us_weekly.csv") or \
+        fred("GASREGW", "us_regular_usd_gal", "eia_gas_us_weekly.csv")
 
 
 def get_brent():
-    fred("DCOILBRENTEU", "brent_usd_bbl", "brent_daily.csv")
+    eia_xls("RBRTE", "brent_usd_bbl", "brent_daily.csv", freq="d") or \
+        fred("DCOILBRENTEU", "brent_usd_bbl", "brent_daily.csv")
 
 
 def get_power():
@@ -215,9 +241,13 @@ PARTS = {"licenses": get_licenses, "trips": get_trips, "hourly": get_trips_hourl
 
 if __name__ == "__main__":
     wanted = sys.argv[1:] or list(PARTS)
-    for name in wanted:
-        print(f"[{name}]")
+    for arg in wanted:                      # "trips:2022" or "trips:2022,2023" limits the years
+        name, _, yrs = arg.partition(":")
+        print(f"[{arg}]", flush=True)
         try:
-            PARTS[name]()
+            if yrs:
+                PARTS[name]([int(y) for y in yrs.split(",")])
+            else:
+                PARTS[name]()
         except Exception as e:
             print(f"  FAILED: {e}")

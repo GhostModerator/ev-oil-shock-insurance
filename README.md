@@ -28,6 +28,8 @@ Key questions: Is a hybrid the cheaper hedge, and for which drivers? How much of
 src/
   step1_tnp_powertrain_share.py   data feasibility: monthly BEV / hybrid share of TNP vehicles
   download_data.py                pulls all other datasets into data/raw/
+  step2_classify.py               powertrain label for every make/model/year (name rule, EPA, LLM)
+  step2_validate.py               taxi fuel-type check + hand-label sample
 data/
   README.md                       full data source list with links
   raw/  processed/                (git-ignored)
@@ -38,7 +40,7 @@ docs/
 
 ## Run
 
-Easiest: on GitHub, open the **Actions** tab → **Fetch data** → **Run workflow**. It runs the scripts on GitHub's servers and commits the aggregated results to `data/fetched/`. Add `EIA_API_KEY` (and optionally `SOCRATA_APP_TOKEN`) under Settings → Secrets and variables → Actions if you need electricity prices.
+Easiest: on GitHub, open the **Actions** tab → **Fetch data** → **Run workflow**. It runs the scripts on GitHub's servers and commits the aggregated results to `data/fetched/`. The trip tables are large, so they have their own workflow, **Fetch trips**: one job per year, saved month by month to `data/fetched/trips/`. If it stops part-way, run it again and it picks up the missing months. Add `EIA_API_KEY` (and optionally `SOCRATA_APP_TOKEN`) under Settings → Secrets and variables → Actions if you need electricity prices.
 
 Locally:
 
@@ -57,8 +59,9 @@ Environment variables:
 
 - [x] Step 1 script: fleet powertrain mix over time
 - [x] Download script for all datasets
-- [ ] Run step 1, check data quality and the share of ambiguous models
-- [ ] LLM classification + hand audit
+- [x] Run step 1, check data quality and the share of ambiguous models
+- [x] Powertrain labels (EPA + LLM) and taxi check
+- [ ] Hand audit of the label sample
 - [ ] Gas price models (jump vs. regime) + scenarios
 - [ ] Stochastic program + superquantile
 - [ ] 2026 backtest, sensitivity, slides

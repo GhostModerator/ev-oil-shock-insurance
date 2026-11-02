@@ -1,0 +1,59 @@
+name: Fetch trips
+
+# Chicago TNP trips, aggregated to month x hour of day. One job per year, run in parallel.
+# Each job saves after every month and commits what it has even if it times out,
+# so just run it again to fill in missing months.
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "JSON list of years"
+        required: false
+        default: "[2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]"
+
+permissions:
+  contents: write
+
+jobs:
+  year:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        year: ${{ fromJSON(inputs.years) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install packages
+        run: pip install requests pandas
+
+      - name: Resume from earlier runs
+        run: |
+          mkdir -p data/raw data/fetched/trips
+          f=data/fetched/trips/tnp_trips_month_hour_${{ matrix.year }}.csv
+          [ -f "$f" ] && cp "$f" data/raw/ || true
+
+      - name: Trips ${{ matrix.year }}
+        timeout-minutes: 320
+        env:
+          SOCRATA_APP_TOKEN: ${{ secrets.SOCRATA_APP_TOKEN }}
+        run: python -u src/download_data.py hourly:${{ matrix.year }} 2>&1 | tee data/fetched/trips/log_${{ matrix.year }}.txt
+
+      - name: Commit
+        if: ${{ always() }}
+        run: |
+          f=data/raw/tnp_trips_month_hour_${{ matrix.year }}.csv
+          [ -f "$f" ] && cp "$f" data/fetched/trips/ || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f data/fetched/trips
+          git commit -m "Fetched trips ${{ matrix.year }}" || exit 0
+          for i in 1 2 3 4 5 6 7 8; do git pull --rebase -q && git push && exit 0; sleep $((RANDOM % 30 + 5)); done
+          exit 1
