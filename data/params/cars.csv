@@ -1,0 +1,18 @@
+param,unit,keep_gas,hybrid,ev,low,high,source
+example_model,,2018 Toyota Camry LE,2023 Toyota Camry Hybrid LE,2023 Tesla Model 3 RWD,,,representative models; EPA fueleconomy.gov
+purchase_price,USD,0,26000,25000,,,"used-market prices 2026 (Coltura used EV guide; Cox Automotive EV Market Monitor). EV new-car case: 37000"
+trade_in_value_now,USD,13000,13000,13000,10000,16000,value of current 2018 sedan; credited when switching (hybrid/ev columns)
+mpg_epa,mi/gal,34,52,,,,EPA combined
+city_mpg_factor,share,0.85,1.0,,0.8,0.95,stop-and-go rideshare driving lowers gas-car mpg; hybrids hold up in the city (assumption)
+kwh_per_mile_epa,kWh/mi,,,0.255,,,EPA combE 25.5 kWh/100mi
+charging_loss,share,,,0.10,0.05,0.15,typical charger-to-battery loss (assumption)
+maintenance,USD/mi,0.13,0.09,0.06,,,"AAA Your Driving Costs 2025: avg 11.04c/mi; EV lowest, hybrid third-lowest; older car higher (assumption)"
+resale_after_4y_share,share of purchase,,0.45,0.30,,,"iSeeCars 5-yr depreciation: hybrid 35.4%, EV 57.2%, all 41.8%; cut for high mileage (assumption)"
+resale_after_4y_keep,USD,3000,,,1500,5000,old high-mileage sedan (assumption)
+insurance,USD/yr,1694,1694,2033,,,"AAA 2025 avg full coverage; EV +20% (assumption); rideshare endorsement added separately"
+rideshare_endorsement,USD/yr,250,250,250,150,400,assumption
+loan_apr,share,,0.088,0.088,0.088,0.139,"Experian Q2 2026 used-car APR: prime 8.81%, near-prime 13.93%"
+loan_term,months,,48,48,,,matches 4-year horizon
+battery_fade_per_year,share,,,0.03,0.023,0.038,"Geotab 2026: 2.3%/yr avg, ~3%/yr mostly DC fast, +0.8pt high use"
+fast_charge_minutes,min per session,,,30,25,45,"Model 3 10-80% ~25 min plus queue/detour (assumption)"
+fast_charge_range_added,mi per session,,,175,,,~70% of 272-mi EPA range

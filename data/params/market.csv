@@ -1,0 +1,10 @@
+param,unit,base,low,high,source
+driver_share_of_fare,share,0.65,0.50,0.79,"Uber: 21% avg take in Q3 2025 (driver 79%); Sherman/Columbia 2026: over 50% on some rides"
+paid_mile_share,share,0.58,0.54,0.62,"Fehr & Peers 2019 (6 cities incl. Chicago): 54-62% of TNC miles carry a rider"
+outside_wage,USD/hr,17.05,15.00,20.00,Chicago minimum wage from July 1 2026
+dcfc_price,USD/kWh,0.50,0.40,0.60,"Chicago DC fast ~50c/kWh, early 2026; scaled with the electricity scenario"
+home_charging,flag,0,0,1,"base: no home charging. Chicago 54.5% renters, 70.6% multi-unit (CMAP/ACS 2019-23); driver surveys: most lack home charging"
+il_ev_rebate,USD,0,0,2000,"subsidy case only: IL $2,000 ($4,000 low income); 3,001 rebates statewide in FY26"
+uber_ev_grant,USD,0,0,4000,"subsidy case only: Uber Go Electric, Platinum/Diamond, 100 trips by end of 2026"
+fuel_relief,USD/gal,0,0,1.0,"Uber Upside up to $1/gal by tier, through May 26 2026 (sensitivity)"
+horizon,months,48,,,
