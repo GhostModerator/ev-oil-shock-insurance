@@ -130,6 +130,25 @@ def reduce(gas, elec, rev, k, seed=0):
     return np.array(reps), np.array(prob)
 
 
+def make_scen(model="A_spike", rev_beta=None, n_scen=N_SCEN):
+    """Scenario dict (as step5_model.load_scen returns) built in memory, e.g. with another revenue link."""
+    g, e, m = monthly_inputs()
+    links, seas_e, seas_r = fit_links(g, e, m)
+    if rev_beta is not None:
+        links["beta_rev_used"] = rev_beta
+    fit = load_weekly()[FIT_START:"2025-12-31"]
+    if model == "A_spike":
+        pA, seasA = fit_jump(fit)[:2]
+        gas = simulate_jump(pA, seasA, fit.iloc[-1], fit.index[-1], MONTHS * 52 // 12 + 2, N_PATHS,
+                            prev_dx=np.log(fit.iloc[-1] / fit.iloc[-2]), seed=11).resample("MS").mean().iloc[:MONTHS]
+    else:
+        pB, seasB = fit_regime(fit)
+        gas = simulate_regime(pB, seasB, fit.resample("MS").mean(), MONTHS, N_PATHS, seed=12)[0]
+    elec, rev = simulate_joint(gas, links, seas_e, seas_r, None, seed=13)
+    reps, prob = reduce(gas.values, elec, rev, n_scen, seed=14)
+    return {"gas": gas.values[:, reps].T, "elec": elec[:, reps].T, "rev": rev[:, reps].T, "prob": prob}
+
+
 def main():
     g, e, m = monthly_inputs()
     links, seas_e, seas_r = fit_links(g, e, m)

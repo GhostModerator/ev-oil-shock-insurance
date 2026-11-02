@@ -30,6 +30,13 @@ src/
   download_data.py                pulls all other datasets into data/raw/
   step2_classify.py               powertrain label for every make/model/year (name rule, EPA, LLM)
   step2_validate.py               taxi fuel-type check + hand-label sample
+  step3_drivers.py                driver types, hour-of-day revenue curve, reservation wages
+  step4_gas_models.py             gas price models (spike / regime) and 2026 backtest
+  step4_scenarios.py              joint gas, electricity, revenue scenarios + reduction
+  step5_model.py                  two-stage stochastic program with CVaR
+  step5_sweep.py                  where the best car flips as driving hours change
+  step6_evaluate.py               sensitivity, break-even, 2026 backtest, fleet mix
+tests/test_step5.py               LP vs hand calculations
 data/
   README.md                       full data source list with links
   raw/  processed/                (git-ignored)
@@ -62,6 +69,8 @@ Environment variables:
 - [x] Run step 1, check data quality and the share of ambiguous models
 - [x] Powertrain labels (EPA + LLM) and taxi check
 - [ ] Hand audit of the label sample
-- [ ] Gas price models (jump vs. regime) + scenarios
-- [ ] Stochastic program + superquantile
-- [ ] 2026 backtest, sensitivity, slides
+- [x] Driver types and revenue curve
+- [x] Gas price models (jump vs. regime) + scenarios
+- [x] Stochastic program + superquantile
+- [x] 2026 backtest, sensitivity
+- [ ] Slides

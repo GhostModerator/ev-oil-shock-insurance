@@ -1,0 +1,60 @@
+1. Sensitivity (best car at lam=0 / lam=1):
+  base                             full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/hybrid
+  gas model B                      full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/hybrid
+  home charging                    full_time: ev/ev  heavy: ev/ev  light: keep_gas/keep_gas  regular: hybrid/ev
+  subsidies $6k                    full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/hybrid
+  home + subsidies                 full_time: ev/ev  heavy: ev/ev  light: keep_gas/keep_gas  regular: ev/ev
+  new EV $37k, home + subsidies    full_time: ev/ev  heavy: ev/ev  light: keep_gas/keep_gas  regular: hybrid/hybrid
+  DC fast $0.40/kWh                full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/hybrid
+  loan APR 13.9%                   full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/keep_gas
+  revenue falls with gas (-0.3)    full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/keep_gas
+  fuel surcharge (+0.2)            full_time: hybrid/hybrid  heavy: hybrid/hybrid  light: keep_gas/keep_gas  regular: hybrid/hybrid
+
+2. Break-even gas price:
+  base 4-yr average gas $3.53
+  light    keep_gas vs hybrid: flips at 4-yr average gas not in $2.12-8.82
+  regular  keep_gas vs hybrid: flips at 4-yr average gas $2.16
+  heavy    hybrid vs ev: flips at 4-yr average gas not in $2.12-8.82
+  regular  hybrid vs ev: flips at 4-yr average gas not in $2.12-8.82
+
+3. 2026 backtest (Jan-Sep):
+              gas  elec_index  rev_index
+date                                    
+2026-01-01  2.937       0.986      1.037
+2026-02-01  2.967       1.072      0.988
+2026-03-01  3.725       1.051      1.010
+2026-04-01  4.275       1.117      0.932
+2026-05-01  4.894       1.236      0.976
+2026-06-01  4.287       1.168      1.024
+2026-07-01  4.009       1.221      0.955
+2026-08-01  4.264       1.179      0.937
+2026-09-01  4.595       1.179      0.939
+     type      car  actual_gain  model_mean_gain  model_p05  model_p95  actual_pct_rank  actual_cash_income
+    light keep_gas       -954.0           -836.0     -950.0     -727.0            0.042               284.0
+    light   hybrid      -2275.0          -2148.0    -2278.0    -2020.0            0.057             -2126.0
+    light       ev      -3410.0          -3280.0    -3403.0    -3168.0            0.033             -2429.0
+  regular keep_gas       -702.0           -284.0     -785.0      299.0            0.098              5082.0
+  regular   hybrid       -734.0            -56.0     -748.0      629.0            0.053              9381.0
+  regular       ev      -2892.0          -2399.0    -2874.0    -1877.0            0.043              2869.0
+    heavy keep_gas        264.0           1544.0       63.0     3074.0            0.078             14432.0
+    heavy   hybrid       2388.0           3995.0     2340.0     5628.0            0.057             28420.0
+    heavy       ev      -1777.0           -426.0    -1705.0      909.0            0.040             13056.0
+full_time keep_gas        470.0           1945.0      251.0     3694.0            0.077             16390.0
+full_time   hybrid       3106.0           4948.0     3052.0     6816.0            0.057             33123.0
+full_time       ev      -1543.0              8.0    -1446.0     1537.0            0.040             16324.0
+
+  Hybrid minus keep, Jan-Sep 2026: actual vs model mean
+           actual   model
+type                     
+full_time  2636.0  3004.0
+heavy      2124.0  2452.0
+light     -1320.0 -1312.0
+regular     -32.0   228.0
+
+4. Implied fleet mix, share of cars (%):
+                      base  home charging  home + subsidies  actual Sep 2026
+car                                                                         
+hybrid                57.7           36.9               0.0             24.7
+keep_gas              42.3           42.3              42.3             69.9
+ev                     0.0           20.8              57.7              4.9
+hybrid (upper bound)   NaN            NaN               NaN             45.9
