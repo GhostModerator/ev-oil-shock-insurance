@@ -1,0 +1,30 @@
+[hourly:2019]
+  m6dm-c72p 2019-01: 8,784,983 trips (95s)
+  m6dm-c72p 2019-02: 8,849,315 trips (4s)
+  m6dm-c72p 2019-03: 10,269,143 trips (84s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ReadTimeout -- retry 5
+  m6dm-c72p 2019-04: 9,211,811 trips (2906s)
+    ConnectionError -- retry 1
+  m6dm-c72p 2019-05: 9,706,891 trips (361s)
+  m6dm-c72p 2019-06: 9,518,793 trips (5s)
+  m6dm-c72p 2019-07: 9,138,820 trips (10s)
+    ReadTimeout -- retry 1
+    ConnectionError -- retry 2
+  m6dm-c72p 2019-08: 9,407,139 trips (1085s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ReadTimeout -- retry 3
+    ConnectionError -- retry 4
+    ReadTimeout -- retry 5
+  m6dm-c72p 2019-09: 8,916,402 trips (2726s)
+    ConnectionError -- retry 1
+    ReadTimeout -- retry 2
+  m6dm-c72p 2019-10: 9,500,519 trips (1078s)
+  m6dm-c72p 2019-11: 9,305,447 trips (88s)
+    ConnectionError -- retry 1
+    ReadTimeout -- retry 2
+  m6dm-c72p 2019-12: 9,241,481 trips (1099s)
