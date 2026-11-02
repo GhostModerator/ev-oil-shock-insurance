@@ -2,6 +2,8 @@
 
 ISE 599 Project 2 (USC, Fall 2026)
 
+Full project outline: [`docs/outline.md`](docs/outline.md)
+
 ## Question
 
 Which car should a Chicago rideshare driver drive, gas, hybrid or battery-electric, when gas prices can jump with no warning? We treat electrification as insurance: it costs extra in a normal year and pays off in a shock year. We measure the premium and the payout for different driver types, then add them up to a city-wide fleet mix and compare it with the real one.
@@ -30,7 +32,8 @@ data/
   README.md                       full data source list with links
   raw/  processed/                (git-ignored)
 figures/
-docs/                             proposal, slides, notes
+docs/
+  outline.md                      project outline: question, data, model, AI use, critical assessment
 ```
 
 ## Run
