@@ -1,0 +1,28 @@
+[hourly:2020]
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+  m6dm-c72p 2020-01: 8,804,875 trips (1253s)
+  m6dm-c72p 2020-02: 9,063,686 trips (17s)
+  m6dm-c72p 2020-03: 5,319,727 trips (9s)
+  m6dm-c72p 2020-04: 1,543,440 trips (20s)
+  m6dm-c72p 2020-05: 1,912,247 trips (3s)
+  m6dm-c72p 2020-06: 2,672,854 trips (43s)
+    ConnectionError -- retry 1
+    HTTP 503: {"message":"Service unavailable","errorCode":"service-unavailable","data":{}} -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ConnectionError -- retry 5
+    ConnectionError -- retry 6
+    2020-07 failed with additional_charges: Socrata request kept failing
+    ConnectionError -- retry 1
+  m6dm-c72p 2020-07: 3,419,835 trips (2600s)
+    ConnectionError -- retry 1
+  m6dm-c72p 2020-08: 3,505,037 trips (339s)
+  m6dm-c72p 2020-09: 3,641,627 trips (8s)
+    ConnectionError -- retry 1
+  m6dm-c72p 2020-10: 3,996,156 trips (345s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+  m6dm-c72p 2020-11: 3,004,900 trips (795s)
+  m6dm-c72p 2020-12: 3,126,759 trips (4s)
