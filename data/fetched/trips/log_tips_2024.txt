@@ -1,0 +1,33 @@
+[tips:2024]
+  n26f-ihde columns: ['trip_id', 'trip_start_timestamp', 'trip_end_timestamp', 'trip_seconds', 'trip_miles', 'pickup_community_area', 'dropoff_community_area', 'fare', 'tip', 'additional_charges', 'trip_total', 'shared_trip_authorized', 'shared_trip_match', 'trips_pooled', 'pickup_centroid_latitude', 'pickup_centroid_longitude', 'pickup_centroid_location', 'dropoff_centroid_latitude', 'dropoff_centroid_longitude', 'dropoff_centroid_location']
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+    ReadTimeout -- retry 3
+  n26f-ihde 2024-01: tips saved (2174s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+  n26f-ihde 2024-02: tips saved (1318s)
+  n26f-ihde 2024-03: tips saved (73s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+    ReadTimeout -- retry 3
+    ReadTimeout -- retry 4
+    ReadTimeout -- retry 5
+  n26f-ihde 2024-04: tips saved (3511s)
+  n26f-ihde 2024-05: tips saved (24s)
+    ReadTimeout -- retry 1
+  n26f-ihde 2024-06: tips saved (838s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+  n26f-ihde 2024-07: tips saved (1419s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+  n26f-ihde 2024-08: tips saved (1338s)
+    ReadTimeout -- retry 1
+    ReadTimeout -- retry 2
+  n26f-ihde 2024-09: tips saved (1364s)
+    ReadTimeout -- retry 1
+    HTTP 503: {"message":"Service unavailable","errorCode":"service-unavailable","data":{}} -- retry 2
+  n26f-ihde 2024-10: tips saved (776s)
+  n26f-ihde 2024-11: tips saved (30s)
+  n26f-ihde 2024-12: tips saved (110s)
