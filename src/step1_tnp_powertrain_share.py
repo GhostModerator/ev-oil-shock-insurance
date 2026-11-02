@@ -94,6 +94,32 @@ def pull_aggregated(fields):
     return df.astype(str)
 
 
+def pull_trip_distribution(fields):
+    """How many vehicles had k trips in each month. Used to define driver types."""
+    path = os.path.join(RAW, "tnp_trips_per_vehicle_dist.csv")
+    if os.path.exists(path):
+        print(f"Using cached {path}")
+        return
+    if "number_of_trips" not in fields:
+        print("No number_of_trips column; skipping trips-per-vehicle distribution")
+        return
+    rows, offset, page = [], 0, 50000
+    while True:
+        batch = get(RESOURCE, {
+            "$select": "month_reported, number_of_trips, count(*) AS n_vehicles",
+            "$group": "month_reported, number_of_trips",
+            "$order": "month_reported, number_of_trips",
+            "$limit": page,
+            "$offset": offset,
+        })
+        rows.extend(batch)
+        if len(batch) < page:
+            break
+        offset += page
+    pd.DataFrame(rows).to_csv(path, index=False)
+    print(f"Saved {path} ({len(rows):,} rows)")
+
+
 # ---------------------------------------------------------------- classify
 def norm(s):
     s = "" if s is None or str(s).lower() == "nan" else str(s)
@@ -139,6 +165,7 @@ def classify(make, model, year):
 def main():
     fields = show_schema()
     df = pull_aggregated(fields)
+    pull_trip_distribution(fields)
 
     df["month"] = pd.to_datetime(df["month_reported"].str[:7], format="%Y-%m", errors="coerce")
     df["n_vehicles"] = pd.to_numeric(df["n_vehicles"], errors="coerce").fillna(0)

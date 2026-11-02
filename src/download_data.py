@@ -7,7 +7,8 @@ Run from the repo root:
     python src/download_data.py gas power  # only some parts
 
 Parts:
-    trips    Chicago TNP trips, aggregated to monthly totals (count, miles, seconds, fare, extra charges)
+    licenses Chicago public passenger vehicle licenses (taxis); may list fuel type
+    trips   Chicago TNP trips, aggregated to monthly totals (count, miles, seconds, fare, extra charges)
     hourly   Chicago TNP trips by month x hour of day (for peak demand vs. charging downtime)
     drivers  Chicago TNP drivers, active drivers per month
     gas      EIA weekly retail regular gasoline: Chicago, Midwest (PADD 2), US average
@@ -191,7 +192,19 @@ def get_mpg():
     print("  saved vehicles.csv (fueleconomy.gov)")
 
 
-PARTS = {"trips": get_trips, "hourly": get_trips_hourly, "drivers": get_drivers,
+def get_licenses():
+    """Chicago public passenger vehicle licenses (taxis etc.). Small; may have a fuel type column."""
+    r = requests.get("https://data.cityofchicago.org/api/views/tfm3-3j95/rows.csv?accessType=DOWNLOAD",
+                     timeout=300)
+    r.raise_for_status()
+    path = os.path.join(RAW, "public_passenger_vehicle_licenses.csv")
+    with open(path, "wb") as f:
+        f.write(r.content)
+    df = pd.read_csv(path, nrows=5)
+    print(f"  saved public_passenger_vehicle_licenses.csv; columns: {list(df.columns)}")
+
+
+PARTS = {"licenses": get_licenses, "trips": get_trips, "hourly": get_trips_hourly, "drivers": get_drivers,
          "gas": get_gas, "brent": get_brent, "power": get_power, "mpg": get_mpg}
 
 if __name__ == "__main__":
