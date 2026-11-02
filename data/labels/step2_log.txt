@@ -1,0 +1,72 @@
+Share of vehicle-months by label:
+cls
+ICE          62.3%
+AMBIGUOUS    25.4%
+HYBRID       10.5%
+BEV           1.5%
+UNMATCHED     0.2%
+PHEV          0.2%
+Name: vehicle_months, dtype: str
+
+By method:
+method
+epa        86.1%
+llm         1.4%
+name       10.1%
+none        0.2%
+pre2005     2.2%
+Name: vehicle_months, dtype: str
+
+Ambiguous option sets:
+options
+HYBRID|ICE         20.1%
+HYBRID|ICE|PHEV     2.8%
+BEV|ICE             1.6%
+ICE|PHEV            0.7%
+HYBRID|PHEV         0.1%
+BEV|HYBRID|PHEV     0.1%
+Name: vehicle_months, dtype: str
+
+Unmatched strings: 1423, 0.1% of vehicle-months
+
+Selected months:
+             total     bev    phev  hybrid_low  hybrid_high  unmatched
+month                                                                 
+2022-02-01   61073  0.0045  0.0022      0.1250       0.3880     0.0003
+2022-12-01   76304  0.0253  0.0022      0.1352       0.3933     0.0004
+2026-02-01   97206  0.0453  0.0034      0.2288       0.4605     0.0005
+2026-09-01  102360  0.0492  0.0037      0.2499       0.4773     0.0011
+Taxis with a known fuel source: 6,999
+  labeled one powertrain: 2,853 (41%); accuracy 97.0%
+  ambiguous:              4,070 (58%); true label is one of the options 99.9%
+  unmatched:              76
+
+Accuracy by method (single-label rows):
+              n  accuracy
+method                   
+epa      1297.0     0.940
+llm        57.0     0.930
+name     1496.0     0.998
+pre2005     3.0     0.333
+
+Confusion table (single-label rows):
+label   BEV  HYBRID  ICE
+truth                   
+BEV       3       0    0
+HYBRID    0    1863   50
+ICE       0      37  900
+
+Most common errors:
+Vehicle Make  Vehicle Model  truth   label 
+TOYOTA        SIENNA         ICE     HYBRID    30
+              COROLLA        HYBRID  ICE       18
+              SIENNA         HYBRID  ICE        5
+              SCION          HYBRID  ICE        4
+NISSAN        ALTIMA         HYBRID  ICE        4
+              NV200          HYBRID  ICE        3
+TOYOTA        PRIUS V        ICE     HYBRID     3
+              RAV4           HYBRID  ICE        2
+FORD          ESCAPE         HYBRID  ICE        2
+DODGE         CARAVAN        HYBRID  ICE        2
+
+Hand-label sample: 296 rows -> data/labels/hand_label_sample.csv

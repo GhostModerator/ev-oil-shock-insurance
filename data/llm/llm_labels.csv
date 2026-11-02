@@ -1,0 +1,158 @@
+make,model,label
+Nissan,Versa Note,ICE
+Chrysler,Town & Country,ICE
+Infiniti,G Sedan,ICE
+Chevrolet,Silverado 1500,ICE
+Cadillac,Escalade Esv,ICE
+Infiniti,Fx,ICE
+Mercedes-Benz,M-Class,ICE
+Lincoln,Navigator L,ICE
+Gmc,Yukon Xl,ICE
+Infiniti,M,ICE
+Infiniti,Jx,ICE
+Toyota,Corolla Matrix,ICE
+Mercedesbenz,Mclass,ICE
+Ford,Expedition Max,ICE
+Honda,Civic Hatchback,ICE
+Toyota,Corolla Ascent,HYBRID|ICE
+Gmc,Sierra 1500,ICE
+Mercedes-Benz,300-Class,ICE
+Mercedes-Benz,Gle Coupe,ICE
+Chevrolet,Captiva Sport,ICE
+Mazda,626,ICE
+Hyundai,Elantra Touring,ICE
+Acura,Tlx,ICE
+Mazda,323,ICE
+Infiniti,G37 Sedan,ICE
+Ram Trucks,Cv,ICE
+Mercedes-Benz,Glc Coupe,ICE
+Infiniti,Ex,ICE
+Mercedes Benz,M Class,ICE
+Mercedes-Benz,350-Class,ICE
+Chevrolet,Malibu Limited,ICE
+Volkswagen,Gli,ICE
+Mercedes-Benz,Glc 200,ICE
+Ford,500,ICE
+Kia,E-Niro,BEV
+Volkswagen,Jetta Gli,ICE
+Nissan,Rogue Select,ICE
+Hyundai,Elantra Gt,ICE
+Chevrolet,Malibu Classic,ICE
+Chevrolet,Cruze Limited,ICE
+Chevrolet,Impala Limited,ICE
+Infiniti,G Coupe,ICE
+Dodge,Ram 1500,ICE
+Dodge,Ram Pickup 1500,ICE
+Toyota,Corollaascent,HYBRID|ICE
+Ford,Focus St,ICE
+Mazda,Bt50,ICE
+Ford,Explorer Sport,ICE
+Ford,Expedition El,ICE
+Toyota,Priusv,HYBRID
+Toyota,Priushybrid,HYBRID
+Subaru,Impreza Wrx,ICE
+Volvo,C40 Recharge,BEV
+Nissan,Rogue Sport,ICE
+Dodge,Ram 1500 Quadcab,ICE
+Lexus,Rx L,HYBRID|ICE
+Kia,Rio 5-Door,ICE
+Lincoln,Town Car Signature,ICE
+Saab,9-7x,ICE
+Mazda,Sp25,ICE
+Gmc,Yukon Denali,ICE
+Mercedes-Benz,Gls Suv,ICE
+Infiniti,Gsedan,ICE
+Saab,97x,ICE
+Mazda,Xedos 6,ICE
+Mazda,Mazdaspeed 6,ICE
+Mazda,Mazdaspeed6,ICE
+Toyota,Matrix,ICE
+Chevrolet,Silverado 2500,ICE
+Buick,Regal Sportback,ICE
+Infiniti,G,ICE
+Ram,2500,ICE
+Mitsubishi,Outlander Sport,ICE
+Mercedes-Benz,Glb 200,ICE
+Chrysler,300m,ICE
+Dodge,Caravan/Grand Caravan,ICE
+Ford,Excursion,ICE
+Infiniti,Q70l,ICE
+Chevrolet,Tahoe Limited/Z71,ICE
+Honda,Accord Crosstour,ICE
+Chevrolet,Tracker,ICE
+Dodge,Ram,ICE
+Am General,Mv-1,ICE
+Dodge,Ram 2500,ICE
+Toyota,Cami,ICE
+Hummer,H2,ICE
+Ram,1500,ICE
+Hyundai,Santa Fe Sport,ICE
+Kia,Rio5,ICE
+Honda,Civic Si,ICE
+Toyota,Scion,ICE
+Lexus,Es Series,HYBRID|ICE
+Hyundai,Elantratouring,ICE
+Bmw,X5 Edrive,PHEV
+Toyota,Camry Solara,ICE
+Jeep,Wrangler Jk,ICE
+Gmc,Sierra 2500,ICE
+Toyota,Corollamatrix,ICE
+Gmc,Envoy Denali,ICE
+Infiniti,M37,ICE
+Honda,Civic Sedan,HYBRID|ICE
+Ford,Transit Wagon,ICE
+Mercedes-Benz,Metris Passengers Van,ICE
+Toyota,Rav,HYBRID|ICE|PHEV
+Mazda,Mazda2,ICE
+Mercedes Benz,Cla,ICE
+Honda,Cr,HYBRID|ICE
+Lexus,Is Series,ICE
+Ram,3500,ICE
+Chevrolet,Agile,ICE
+Acura,Tl,ICE
+Toyota,Corolla Rumion,ICE
+Infiniti,Qx80,ICE
+Jeep,Wrangler Unlimited,ICE|PHEV
+Land Rover,Range Rover Evoque,ICE
+Gmc,Acadia Limited,ICE
+Volkswagen,Touareg 2,ICE
+Jaguar,Xjr,ICE
+Ford,Focus Rs,ICE
+Bmw,5-Series 530e,PHEV
+Chevrolet,Trailblazer,ICE
+Hyundai,Elantragt,ICE
+Nissan,Almera,ICE
+Nissan,Kicks Mpv,ICE
+Infiniti,G35,ICE
+Lexus,Rx Series,HYBRID|ICE
+Suzuki,Xl7,ICE
+Lincoln,Ls,ICE
+Dodge,Braun,ICE
+Bmw,3-Series 330e,PHEV
+Kia,Rio 5 Door,ICE
+Ford,Taurus X Limited,ICE
+Jeep,Commander,ICE
+Chevrolet,Silverado1500,ICE
+Ford,F-250 Sd,ICE
+Infiniti,Qx30,ICE
+Chevrolet,Silverado 1500 Classic,ICE
+Dodge,Avenger,ICE
+Jeep,Liberty,ICE
+Audi,A4 Allroad,ICE
+Ford,Fusionhybrid,HYBRID
+Bmw,5 Series Gran Turismo,ICE
+Bmw,3 Series Gran Turismo,ICE
+Ford,F350,ICE
+Jaguar,Xj-Series,ICE
+Infiniti,Qx60,HYBRID|ICE
+Hummer,H2 Sut,ICE
+Infiniti,Q30,ICE
+Volkswagen,Sedan,ICE
+Ford,Explorer Sport Trac,ICE
+Chevrolet,Malibu Maxx,ICE
+Ford,F250,ICE
+Bmw,3 Series Edrive,PHEV
+Ford,Taurus X,ICE
+Dodge,Caliber,ICE
+Dodge,Ram1500quadcab,ICE
+Chrysler,200,ICE
