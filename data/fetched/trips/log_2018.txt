@@ -1,0 +1,9 @@
+[hourly:2018]
+    ConnectionError -- retry 1
+  m6dm-c72p 2018-11: 8,780,411 trips (411s)
+    ConnectionError -- retry 1
+    ConnectionError -- retry 2
+    ConnectionError -- retry 3
+    ConnectionError -- retry 4
+    ConnectionError -- retry 5
+  m6dm-c72p 2018-12: 8,681,042 trips (1881s)
