@@ -1,0 +1,9 @@
+type,lam,car_stochastic,car_mean_value,car_fixed_plan,VSS,loss_if_hours_not_adjusted,mean_value_problem_loss,stochastic_mean_loss
+light,0.0,keep_gas,keep_gas,keep_gas,0.0,0.0,4561.720649559787,4491.041464634036
+light,1.0,keep_gas,keep_gas,keep_gas,0.0,0.0,4561.720649559787,4491.041464634036
+regular,0.0,hybrid,hybrid,hybrid,0.0,0.0,746.6849279366143,748.107847603565
+regular,1.0,hybrid,hybrid,hybrid,0.0,0.0,746.6849279366143,748.107847603565
+heavy,0.0,hybrid,hybrid,hybrid,0.0,0.0,-20248.910059602294,-20291.07150282149
+heavy,1.0,hybrid,hybrid,hybrid,0.0,0.0,-20248.910059602294,-20291.07150282149
+full_time,0.0,hybrid,hybrid,hybrid,0.0,0.0,-25179.371776963868,-25175.981523238588
+full_time,1.0,hybrid,hybrid,hybrid,0.0,0.0,-25179.371776963868,-25175.981523238588

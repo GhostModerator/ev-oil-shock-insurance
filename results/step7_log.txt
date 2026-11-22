@@ -1,0 +1,76 @@
+1. Jumps in weekly gas changes
+  weekly residuals without a jump term: excess kurtosis 3.5 (normal = 0), Jarque-Bera p = 7.3e-134
+  0.9% of weeks move more than 3 sd (normal: 0.27%); largest move 7.4 sd
+  after removing the 14 flagged jump weeks: excess kurtosis -0.0
+
+2. Forecast benchmarks (12-month out-of-sample, monthly averages)
+              test       model  coverage_90  crps peak_month  peak_pct_rank  p_avg_at_least_actual  mean_pct_rank
+2022 (fit to 2021)    A (jump)        0.667 0.658    2022-06          0.992                  0.040          0.903
+2022 (fit to 2021)  B (regime)        0.500 0.786    2022-06          0.997                  0.015          0.927
+2022 (fit to 2021) Random walk        0.667 0.707    2022-06          0.994                  0.074          0.834
+2022 (fit to 2021)       AR(1)        0.417 0.889    2022-06          1.000                  0.007          0.909
+2026 (fit to 2025)    A (jump)        0.800 0.445    2026-05          0.976                  0.089          0.761
+2026 (fit to 2025)  B (regime)        0.800 0.396    2026-05          0.958                  0.126          0.726
+2026 (fit to 2025) Random walk        0.500 0.736    2026-05          0.996                  0.039          0.825
+2026 (fit to 2025)       AR(1)        0.400 0.774    2026-05          0.998                  0.011          0.840
+
+3. Revenue per hour: sd of 12-month log change
+                           version  sd_12m_change  sd_4yr_avg_index
+                  observed 2022-25         0.0544               NaN
+                        AR(1) only         0.0535            0.0095
+AR(1) + random walk 4.1%/yr (used)         0.0675            0.0487
+
+4. Electricity elasticity to gas, by period
+   period  elasticity     t  ci_low  ci_high  months
+2015-2025       0.123 1.983   0.001    0.245     120
+2015-2019       0.029 1.153  -0.021    0.079      48
+2020-2025       0.138 1.592  -0.032    0.308      60
+2015-2021       0.060 1.904  -0.002    0.122      72
+
+5-6. Value of recourse and value of the stochastic solution (Model A)
+  value of adjusting hours each month (fixed plan minus recourse, $ over 4 years):
+     type      car  value_of_recourse_mean  value_of_recourse_cvar
+    light keep_gas                    80.0                   289.0
+    light   hybrid                     0.0                     3.0
+    light       ev                    37.0                   239.0
+  regular keep_gas                   474.0                  1596.0
+  regular   hybrid                     3.0                    21.0
+  regular       ev                   191.0                  1247.0
+    heavy keep_gas                   828.0                  2310.0
+    heavy   hybrid                    42.0                   283.0
+    heavy       ev                   482.0                  1635.0
+full_time keep_gas                   498.0                  2137.0
+full_time   hybrid                     6.0                    40.0
+full_time       ev                   237.0                  1641.0
+
+  car choice: stochastic program vs. one average scenario vs. fixed hours plan:
+     type  lam car_stochastic car_mean_value car_fixed_plan  VSS  loss_if_hours_not_adjusted  mean_value_problem_loss  stochastic_mean_loss
+    light  0.0       keep_gas       keep_gas       keep_gas  0.0                         0.0                   4562.0                4491.0
+    light  1.0       keep_gas       keep_gas       keep_gas  0.0                         0.0                   4562.0                4491.0
+  regular  0.0         hybrid         hybrid         hybrid  0.0                         0.0                    747.0                 748.0
+  regular  1.0         hybrid         hybrid         hybrid  0.0                         0.0                    747.0                 748.0
+    heavy  0.0         hybrid         hybrid         hybrid  0.0                         0.0                 -20249.0              -20291.0
+    heavy  1.0         hybrid         hybrid         hybrid  0.0                         0.0                 -20249.0              -20291.0
+full_time  0.0         hybrid         hybrid         hybrid  0.0                         0.0                 -25179.0              -25176.0
+full_time  1.0         hybrid         hybrid         hybrid  0.0                         0.0                 -25179.0              -25176.0
+
+7. Mean-variance vs. mean-CVaR
+  tail_ratio = actual CVaR gap / CVaR gap if losses were normal (1 = normal tail)
+     type  lam car_mean_cvar car_mean_variance  tail_ratio_keep_gas  tail_ratio_hybrid  tail_ratio_ev
+full_time  0.0        hybrid            hybrid                 0.94               0.96           0.95
+full_time  0.5        hybrid            hybrid                 0.94               0.96           0.95
+full_time  1.0        hybrid            hybrid                 0.94               0.96           0.95
+    heavy  0.0        hybrid            hybrid                 0.91               0.95           0.93
+    heavy  0.5        hybrid            hybrid                 0.91               0.95           0.93
+    heavy  1.0        hybrid            hybrid                 0.91               0.95           0.93
+    light  0.0      keep_gas          keep_gas                 0.86               0.96           0.87
+    light  0.5      keep_gas          keep_gas                 0.86               0.96           0.87
+    light  1.0      keep_gas          keep_gas                 0.86               0.96           0.87
+  regular  0.0        hybrid            hybrid                 0.87               0.96           0.91
+  regular  0.5        hybrid            hybrid                 0.87               0.96           0.91
+  regular  1.0        hybrid            hybrid                 0.87               0.96           0.91
+
+8. Hours response, 2026 vs. 2025
+  model, gas car, hours per month: light 11 -> 13 h, regular 61 -> 47 h, heavy 183 -> 118 h, full_time 260 -> 133 h
+ model_change  data_change_trip_hours_per_vehicle  data_months_2026  data_months_2025  data_change_active_vehicles
+       -0.299                               0.018                 9                 9                       -0.017

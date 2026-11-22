@@ -1,0 +1,2 @@
+weeks,excess_kurtosis,jarque_bera_p,share_beyond_3sd,normal_share_beyond_3sd,largest_move_sd,jumps_flagged,excess_kurtosis_after_jumps
+1094,3.4581401630561244,7.285433322604387e-134,0.009140767824497258,0.0026997960632601866,7.371283887846423,14,-0.020501289347280238

@@ -36,6 +36,7 @@ src/
   step5_model.py                  two-stage stochastic program with CVaR
   step5_sweep.py                  where the best car flips as driving hours change
   step6_evaluate.py               sensitivity, break-even, 2026 backtest, fleet mix
+  step7_validate.py               why these models: forecast benchmarks, recourse value, VSS, risk measure
 tests/test_step5.py               LP vs hand calculations
 data/
   README.md                       full data source list with links
@@ -44,6 +45,31 @@ figures/
 docs/
   outline.md                      project outline: question, data, model, AI use, critical assessment
 ```
+
+## Validation: why these models
+
+`python src/step7_validate.py` (about 15 seconds). Tables in `results/step7_*.csv`, full output in `results/step7_log.txt`.
+
+**Forecast side**
+
+| Check | Result | What it means |
+|---|---|---|
+| Jumps in weekly gas | Without a jump term the residuals have excess kurtosis 3.5 and 0.9% of weeks move more than 3 sd (normal: 0.27%). After taking out the 14 flagged jump weeks, kurtosis is about 0. | The jump term is needed, and one jump term is enough. |
+| Benchmarks, 2026 (fit to 2025) | Mean CRPS: A 0.45, B 0.40, random walk 0.74, AR(1) 0.77. Months inside the 90% band: 80%, 80%, 50%, 40%. | Both gas models beat the simple benchmarks by a wide margin. |
+| Benchmarks, 2022 (fit to 2021) | Mean CRPS: A 0.66, random walk 0.71, B 0.79, AR(1) 0.89. | A is still best. B does worse here because only four crises were known before 2022. All four models put the June 2022 peak above their 99th percentile. |
+| Revenue random walk | SD of 12-month change: data 5.4%, AR(1) alone 5.4%, AR(1) + random walk 6.8%. SD of the 4-year average: 1.0% without the random walk, 4.9% with it. | Four years of data cannot tell the two apart at 12 months. The random walk is an assumption about persistence (the 2023 and 2026 drops lasted), not something the data prove. The "demand risk is about 3 times fuel risk" result depends on it. |
+| Electricity elasticity | 2015–2025: 0.12 (t = 2.0). 2015–2019: 0.03. 2020–2025: 0.14. Neither sub-period is significant alone. | The link is weak and not stable. It matters little because the EV loses on charging time and fixed cost anyway. |
+
+![Forecast benchmarks](figures/step7_forecast_benchmarks.png)
+
+**Optimization side**
+
+| Check | Result | What it means |
+|---|---|---|
+| Value of recourse | Setting hours after seeing each month's prices (vs. one fixed plan for all scenarios) is worth up to $830 in mean loss and $2,300 in CVaR for the gas car, about $0–280 for the hybrid. No car choice changes. | Flexible hours matter most for the gas car, which is the "option to drive less". The two-stage form is needed to measure that. |
+| VSS | Planning with one average scenario picks the same car for every type, so VSS = 0 at both λ = 0 and λ = 1. | For the four driver types the stochastic program does not change the choice. Its value is in the risk numbers and in the 62–73 hour band where λ decides. |
+| Mean-variance vs. mean-CVaR | Same car for every type and λ. Loss tails are close to normal (CVaR gap / normal CVaR gap = 0.86–0.96). | CVaR was picked because it measures the bad tail directly and keeps the problem linear, not because it gives a different answer here. |
+| Hours response in 2026 | Model, gas car: hours fall about 30% with real 2026 prices and revenue. Data: trip-hours per active vehicle rose 1.8% (Jan–Sep 2026 vs. 2025). | The linear hours rule reacts far too strongly. Real drivers kept driving. This overstates the value of flexible hours and the gas car's option to drive less. |
 
 ## Run
 
@@ -73,4 +99,5 @@ Environment variables:
 - [x] Gas price models (jump vs. regime) + scenarios
 - [x] Stochastic program + superquantile
 - [x] 2026 backtest, sensitivity
+- [x] Validation of the model choices (step 7)
 - [ ] Slides
